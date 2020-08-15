@@ -23,7 +23,7 @@
  ******************************************************************************/
 
 /*!
- * @file        Dispatch-Interval.cpp
+ * @file        Dispatch-Action.cpp
  * @copyright   (c) 2020, Jean-David Gadina - www.xs-labs.com
  */
 
