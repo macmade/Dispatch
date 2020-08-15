@@ -1,5 +1,5 @@
 language: objective-c
 script:
-xcodebuild -project "Dispatch.xcodeproj" -scheme "Test" build
+xcodebuild -project "Dispatch.xcodeproj" -scheme "Test" build test
 notifications:
     slack: xs-labs:FXh1yLXNkpcVxKZhZU6icdhI
