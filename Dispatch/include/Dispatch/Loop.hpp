@@ -40,13 +40,14 @@ namespace Dispatch
         public:
             
             Loop();
-            Loop( const Loop & o );
-            Loop( Loop && o ) noexcept;
             ~Loop();
             
-            Loop & operator =( Loop o );
+            Loop( const Loop & o )              = delete;
+            Loop( Loop && o )                   = delete;
+            Loop & operator =( const Loop & o ) = delete;
+            Loop & operator =( Loop && o )      = delete;
             
-            friend void swap( Loop & o1, Loop & o2 );
+            void run();
             
         private:
             

@@ -28,6 +28,13 @@
  */
 
 #include <Dispatch/Queue.hpp>
+#include <Dispatch/Loop.hpp>
+#include <thread>
+#include <condition_variable>
+
+#ifdef __APPLE__
+#include <pthread.h>
+#endif
 
 namespace Dispatch
 {
@@ -36,35 +43,22 @@ namespace Dispatch
         public:
             
             IMPL( const std::string & label, Kind kind, Priority priority );
-            IMPL( const IMPL & o );
             ~IMPL();
+            
+            void _run();
             
             std::string _label;
             Kind        _kind;
             Priority    _priority;
+            Loop        _loop;
     };
     
     Queue::Queue( const std::string & label, Kind kind, Priority priority ):
         impl( std::make_unique< IMPL >( label, kind, priority ) )
     {}
     
-    Queue::Queue( const Queue & o ):
-        impl( std::make_unique< IMPL >( *( o.impl ) ) )
-    {}
-    
-    Queue::Queue( Queue && o ) noexcept:
-        impl( std::move( o.impl ) )
-    {}
-    
     Queue::~Queue()
     {}
-    
-    Queue & Queue::operator =( Queue o )
-    {
-        swap( *( this ), o );
-        
-        return *( this );
-    }
     
     std::string Queue::label() const
     {
@@ -102,25 +96,30 @@ namespace Dispatch
         ( void )timer;
     }
     
-    void swap( Queue & o1, Queue & o2 )
-    {
-        using std::swap;
-        
-        swap( o1.impl, o2.impl );
-    }
-    
     Queue::IMPL::IMPL( const std::string & label, Kind kind, Priority priority ):
         _label(    label ),
         _kind(     kind ),
         _priority( priority )
-    {}
-    
-    Queue::IMPL::IMPL( const IMPL & o ):
-        _label(    o._label ),
-        _kind(     o._kind ),
-        _priority( o._priority )
-    {}
+    {
+        std::thread
+        (
+            [ & ]()
+            {
+                this->_run();
+            }
+        )
+        .detach();
+    }
     
     Queue::IMPL::~IMPL()
     {}
+    
+    void Queue::IMPL::_run()
+    {
+        #ifdef __APPLE__
+        pthread_setname_np( this->_label.c_str() );
+        #endif
+        
+        this->_loop.run();
+    }
 }

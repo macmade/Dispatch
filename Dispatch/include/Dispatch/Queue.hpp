@@ -57,11 +57,12 @@ namespace Dispatch
             };
             
             Queue( const std::string & label, Kind kind, Priority priority = Priority::Normal );
-            Queue( const Queue & o );
-            Queue( Queue && o ) noexcept;
             ~Queue();
             
-            Queue & operator =( Queue o );
+            Queue( const Queue & o )              = delete;
+            Queue( Queue && o )                   = delete;
+            Queue & operator =( const Queue & o ) = delete;
+            Queue & operator =( Queue && o )      = delete;
             
             std::string label()    const;
             Kind        kind()     const;
@@ -71,8 +72,6 @@ namespace Dispatch
             void async(      const Action & action );
             void asyncAfter( const Action & action, const Interval & interval );
             void schedule(   const Timer & timer );
-            
-            friend void swap( Queue & o1, Queue & o2 );
             
         private:
             
