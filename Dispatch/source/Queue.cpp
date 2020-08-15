@@ -30,6 +30,11 @@
 #include <Dispatch/Queue.hpp>
 #include <Dispatch/Loop.hpp>
 #include <thread>
+#include <mutex>
+#include <map>
+#include <type_traits>
+#include <exception>
+#include <array>
 #include <condition_variable>
 
 #ifdef __APPLE__
@@ -52,6 +57,55 @@ namespace Dispatch
             Priority    _priority;
             Loop        _loop;
     };
+    
+    Queue & Queue::Global( Priority priority )
+    {
+        static std::once_flag                              once;
+        static std::array< std::unique_ptr< Queue >, 3 > * queues;
+        
+        std::call_once
+        (
+            once,
+            [ & ]()
+            {
+                queues = new std::remove_pointer< decltype( queues ) >::type();
+                
+                queues->at( 0 ) = std::make_unique< Queue >( "com.xs-labs.Dispatch.Queue.Global.Low",    Kind::Concurrent, Priority::Low );
+                queues->at( 1 ) = std::make_unique< Queue >( "com.xs-labs.Dispatch.Queue.Global.Normal", Kind::Concurrent, Priority::Normal );
+                queues->at( 2 ) = std::make_unique< Queue >( "com.xs-labs.Dispatch.Queue.Global.High",   Kind::Concurrent, Priority::High );
+            }
+        );
+        
+        if( priority == Priority::Low )
+        {
+            return *( queues->at( 0 ) );
+        }
+        else if( priority == Priority::Normal )
+        {
+            return *( queues->at( 1 ) );
+        }
+        else if( priority == Priority::High )
+        {
+            return *( queues->at( 2 ) );
+        }
+        
+        throw std::runtime_error( "Invalid Global Dispatch Queue Priority" );
+    }
+    
+    Queue & Queue::Low()
+    {
+        return Global( Priority::Low );
+    }
+    
+    Queue & Queue::Normal()
+    {
+        return Global( Priority::Normal );
+    }
+    
+    Queue & Queue::High()
+    {
+        return Global( Priority::High );
+    }
     
     Queue::Queue( const std::string & label, Kind kind, Priority priority ):
         impl( std::make_unique< IMPL >( label, kind, priority ) )
@@ -117,7 +171,30 @@ namespace Dispatch
     void Queue::IMPL::_run()
     {
         #ifdef __APPLE__
+        
         pthread_setname_np( this->_label.c_str() );
+        
+        if( this->_priority == Priority::Low )
+        {
+            struct sched_param sp;
+            
+            memset( &sp, 0, sizeof( struct sched_param ) );
+            
+            sp.sched_priority = sched_get_priority_min( SCHED_RR );
+            
+            pthread_setschedparam( pthread_self(), SCHED_RR, &sp );
+        }
+        else if( this->_priority == Priority::Normal )
+        {
+            struct sched_param sp;
+            
+            memset( &sp, 0, sizeof( struct sched_param ) );
+            
+            sp.sched_priority = sched_get_priority_min( SCHED_RR );
+            
+            pthread_setschedparam( pthread_self(), SCHED_RR, &sp );
+        }
+        
         #endif
         
         this->_loop.run();

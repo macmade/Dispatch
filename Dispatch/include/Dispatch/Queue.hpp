@@ -56,6 +56,11 @@ namespace Dispatch
                 High
             };
             
+            static Queue & Global( Priority priority );
+            static Queue & Low();
+            static Queue & Normal();
+            static Queue & High();
+            
             Queue( const std::string & label, Kind kind, Priority priority = Priority::Normal );
             ~Queue();
             

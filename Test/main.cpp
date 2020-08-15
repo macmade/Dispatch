@@ -31,7 +31,7 @@
 
 int main()
 {
-    Dispatch::Queue queue( "com.xs-labs.Dispatch.Serial", Dispatch::Queue::Kind::Serial );
+    Dispatch::Queue::Normal();
     
     return 0;
 }
