@@ -30,13 +30,39 @@
 #ifndef DISPATCH_QUEUE_HPP
 #define DISPATCH_QUEUE_HPP
 
+#include <memory>
+#include <algorithm>
+#include <string>
+
 namespace Dispatch
 {
     class Queue
     {
         public:
             
+            enum class Kind: int
+            {
+                Serial,
+                Concurrent
+            };
             
+            Queue( const std::string & label, Kind kind );
+            Queue( const Queue & o );
+            Queue( Queue && o ) noexcept;
+            ~Queue();
+            
+            Queue & operator =( Queue o );
+            
+            std::string label() const;
+            Kind        kind()  const;
+            
+            friend void swap( Queue & o1, Queue & o2 );
+            
+        private:
+            
+            class IMPL;
+            
+            std::unique_ptr< IMPL > impl;
     };
 }
 

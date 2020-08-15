@@ -31,5 +31,52 @@
 
 namespace Dispatch
 {
+    class Action::IMPL
+    {
+        public:
+            
+            IMPL();
+            IMPL( const IMPL & o );
+            ~IMPL();
+    };
     
+    Action::Action():
+        impl( std::make_unique< IMPL >() )
+    {}
+    
+    Action::Action( const Action & o ):
+        impl( std::make_unique< IMPL >( *( o.impl ) ) )
+    {}
+    
+    Action::Action( Action && o ) noexcept:
+        impl( std::move( o.impl ) )
+    {}
+    
+    Action::~Action()
+    {}
+    
+    Action & Action::operator =( Action o )
+    {
+        swap( *( this ), o );
+        
+        return *( this );
+    }
+    
+    void swap( Action & o1, Action & o2 )
+    {
+        using std::swap;
+        
+        swap( o1.impl, o2.impl );
+    }
+    
+    Action::IMPL::IMPL()
+    {}
+    
+    Action::IMPL::IMPL( const IMPL & o )
+    {
+        ( void )o;
+    }
+    
+    Action::IMPL::~IMPL()
+    {}
 }

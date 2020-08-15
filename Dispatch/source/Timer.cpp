@@ -31,5 +31,52 @@
 
 namespace Dispatch
 {
+    class Timer::IMPL
+    {
+        public:
+            
+            IMPL();
+            IMPL( const IMPL & o );
+            ~IMPL();
+    };
     
+    Timer::Timer():
+        impl( std::make_unique< IMPL >() )
+    {}
+    
+    Timer::Timer( const Timer & o ):
+        impl( std::make_unique< IMPL >( *( o.impl ) ) )
+    {}
+    
+    Timer::Timer( Timer && o ) noexcept:
+        impl( std::move( o.impl ) )
+    {}
+    
+    Timer::~Timer()
+    {}
+    
+    Timer & Timer::operator =( Timer o )
+    {
+        swap( *( this ), o );
+        
+        return *( this );
+    }
+    
+    void swap( Timer & o1, Timer & o2 )
+    {
+        using std::swap;
+        
+        swap( o1.impl, o2.impl );
+    }
+    
+    Timer::IMPL::IMPL()
+    {}
+    
+    Timer::IMPL::IMPL( const IMPL & o )
+    {
+        ( void )o;
+    }
+    
+    Timer::IMPL::~IMPL()
+    {}
 }

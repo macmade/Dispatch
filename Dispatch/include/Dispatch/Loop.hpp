@@ -30,13 +30,29 @@
 #ifndef DISPATCH_LOOP_HPP
 #define DISPATCH_LOOP_HPP
 
+#include <memory>
+#include <algorithm>
+
 namespace Dispatch
 {
     class Loop
     {
         public:
             
+            Loop();
+            Loop( const Loop & o );
+            Loop( Loop && o ) noexcept;
+            ~Loop();
             
+            Loop & operator =( Loop o );
+            
+            friend void swap( Loop & o1, Loop & o2 );
+            
+        private:
+            
+            class IMPL;
+            
+            std::unique_ptr< IMPL > impl;
     };
 }
 

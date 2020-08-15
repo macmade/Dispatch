@@ -31,5 +31,52 @@
 
 namespace Dispatch
 {
+    class Loop::IMPL
+    {
+        public:
+            
+            IMPL();
+            IMPL( const IMPL & o );
+            ~IMPL();
+    };
     
+    Loop::Loop():
+        impl( std::make_unique< IMPL >() )
+    {}
+    
+    Loop::Loop( const Loop & o ):
+        impl( std::make_unique< IMPL >( *( o.impl ) ) )
+    {}
+    
+    Loop::Loop( Loop && o ) noexcept:
+        impl( std::move( o.impl ) )
+    {}
+    
+    Loop::~Loop()
+    {}
+    
+    Loop & Loop::operator =( Loop o )
+    {
+        swap( *( this ), o );
+        
+        return *( this );
+    }
+    
+    void swap( Loop & o1, Loop & o2 )
+    {
+        using std::swap;
+        
+        swap( o1.impl, o2.impl );
+    }
+    
+    Loop::IMPL::IMPL()
+    {}
+    
+    Loop::IMPL::IMPL( const IMPL & o )
+    {
+        ( void )o;
+    }
+    
+    Loop::IMPL::~IMPL()
+    {}
 }

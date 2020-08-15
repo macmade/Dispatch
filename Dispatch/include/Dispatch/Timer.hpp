@@ -30,13 +30,29 @@
 #ifndef DISPATCH_TIMER_HPP
 #define DISPATCH_TIMER_HPP
 
+#include <memory>
+#include <algorithm>
+
 namespace Dispatch
 {
     class Timer
     {
         public:
             
+            Timer();
+            Timer( const Timer & o );
+            Timer( Timer && o ) noexcept;
+            ~Timer();
             
+            Timer & operator =( Timer o );
+            
+            friend void swap( Timer & o1, Timer & o2 );
+            
+        private:
+            
+            class IMPL;
+            
+            std::unique_ptr< IMPL > impl;
     };
 }
 

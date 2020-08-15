@@ -30,13 +30,29 @@
 #ifndef DISPATCH_ACTION_HPP
 #define DISPATCH_ACTION_HPP
 
+#include <memory>
+#include <algorithm>
+
 namespace Dispatch
 {
     class Action
     {
         public:
             
+            Action();
+            Action( const Action & o );
+            Action( Action && o ) noexcept;
+            ~Action();
             
+            Action & operator =( Action o );
+            
+            friend void swap( Action & o1, Action & o2 );
+            
+        private:
+            
+            class IMPL;
+            
+            std::unique_ptr< IMPL > impl;
     };
 }
 

@@ -31,5 +31,67 @@
 
 namespace Dispatch
 {
+    class Queue::IMPL
+    {
+        public:
+            
+            IMPL( const std::string & label, Kind kind );
+            IMPL( const IMPL & o );
+            ~IMPL();
+            
+            std::string _label;
+            Kind        _kind;
+    };
     
+    Queue::Queue( const std::string & label, Kind kind ):
+        impl( std::make_unique< IMPL >( label, kind ) )
+    {}
+    
+    Queue::Queue( const Queue & o ):
+        impl( std::make_unique< IMPL >( *( o.impl ) ) )
+    {}
+    
+    Queue::Queue( Queue && o ) noexcept:
+        impl( std::move( o.impl ) )
+    {}
+    
+    Queue::~Queue()
+    {}
+    
+    Queue & Queue::operator =( Queue o )
+    {
+        swap( *( this ), o );
+        
+        return *( this );
+    }
+    
+    std::string Queue::label() const
+    {
+        return this->impl->_label;
+    }
+    
+    Queue::Kind Queue::kind() const
+    {
+        return this->impl->_kind;
+    }
+    
+    void swap( Queue & o1, Queue & o2 )
+    {
+        using std::swap;
+        
+        swap( o1.impl, o2.impl );
+    }
+    
+    Queue::IMPL::IMPL( const std::string & label, Kind kind ):
+        _label( label ),
+        _kind(  kind )
+    {}
+    
+    Queue::IMPL::IMPL( const IMPL & o ):
+        _label( o._label ),
+        _kind(  o._kind )
+    {}
+    
+    Queue::IMPL::~IMPL()
+    {}
 }
