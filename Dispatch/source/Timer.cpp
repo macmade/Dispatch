@@ -35,15 +35,22 @@ namespace Dispatch
     {
         public:
             
-            IMPL();
+            IMPL( const Interval & interval, Kind kind, const Action & action );
             IMPL( const IMPL & o );
             ~IMPL();
             
-            UUID _uuid;
+            UUID     _uuid;
+            Interval _interval;
+            Kind     _kind;
+            Action   _action;
     };
     
-    Timer::Timer():
-        impl( std::make_unique< IMPL >() )
+    Timer::Timer( const Interval & interval, const Action & action ):
+        Timer( interval, Kind::Repeating, action )
+    {}
+    
+    Timer::Timer( const Interval & interval, Kind kind, const Action & action ):
+        impl( std::make_unique< IMPL >( interval, kind, action ) )
     {}
     
     Timer::Timer( const Timer & o ):
@@ -79,6 +86,21 @@ namespace Dispatch
         return this->impl->_uuid;
     }
     
+    Interval Timer::interval() const
+    {
+        return this->impl->_interval;
+    }
+    
+    Timer::Kind Timer::kind() const
+    {
+        return this->impl->_kind;
+    }
+    
+    Action Timer::action() const
+    {
+        return this->impl->_action;
+    }
+    
     void swap( Timer & o1, Timer & o2 )
     {
         using std::swap;
@@ -86,11 +108,17 @@ namespace Dispatch
         swap( o1.impl, o2.impl );
     }
     
-    Timer::IMPL::IMPL()
+    Timer::IMPL::IMPL( const Interval & interval, Kind kind, const Action & action ):
+        _interval( interval ),
+        _kind(     kind ),
+        _action(   action )
     {}
     
     Timer::IMPL::IMPL( const IMPL & o ):
-        _uuid( o._uuid )
+        _uuid(     o._uuid ),
+        _interval( o._interval ),
+        _kind(     o._kind ),
+        _action(   o._action )
     {}
     
     Timer::IMPL::~IMPL()

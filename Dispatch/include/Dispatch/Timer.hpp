@@ -33,6 +33,8 @@
 #include <memory>
 #include <algorithm>
 #include <Dispatch/UUID.hpp>
+#include <Dispatch/Interval.hpp>
+#include <Dispatch/Action.hpp>
 
 namespace Dispatch
 {
@@ -40,7 +42,14 @@ namespace Dispatch
     {
         public:
             
-            Timer();
+            enum class Kind
+            {
+                Repeating,
+                Transient
+            };
+            
+            Timer( const Interval & interval, const Action & action );
+            Timer( const Interval & interval, Kind kind, const Action & action );
             Timer( const Timer & o );
             Timer( Timer && o ) noexcept;
             ~Timer();
@@ -50,7 +59,10 @@ namespace Dispatch
             bool operator ==( const Timer & o ) const;
             bool operator !=( const Timer & o ) const;
             
-            UUID uuid() const;
+            UUID     uuid()     const;
+            Interval interval() const;
+            Kind     kind()     const;
+            Action   action()   const;
             
             friend void swap( Timer & o1, Timer & o2 );
             

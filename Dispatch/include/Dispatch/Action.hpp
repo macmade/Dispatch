@@ -32,6 +32,7 @@
 
 #include <memory>
 #include <algorithm>
+#include <functional>
 
 namespace Dispatch
 {
@@ -39,12 +40,20 @@ namespace Dispatch
     {
         public:
             
-            Action();
+            template< class T >
+            Action( T f ): Action( std::function< void() > { f } )
+            {}
+            
+            Action( const std::function< void() > & f );
             Action( const Action & o );
             Action( Action && o ) noexcept;
             ~Action();
             
             Action & operator =( Action o );
+            
+            void operator ()() const;
+            
+            void execute() const;
             
             friend void swap( Action & o1, Action & o2 );
             

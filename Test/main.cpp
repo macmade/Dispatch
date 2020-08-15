@@ -29,13 +29,34 @@
 
 #include <Dispatch.hpp>
 #include <thread>
+#include <iostream>
+#include <condition_variable>
+#include <mutex>
 
 int main()
 {
     Dispatch::Queue::Normal();
     
-    volatile int x = 0;
-    while( x == 0 );
+    std::this_thread::sleep_for( std::chrono::seconds( 1 ) );
+    
+    Dispatch::Queue::Normal().schedule
+    (
+        {
+            Dispatch::Interval::FromSeconds( 1 ),
+            []()
+            {
+                std::cout << "hello, world" << std::endl;
+            }
+        }
+    );
+    
+    {
+        std::mutex              mtx;
+        std::unique_lock        l( mtx );
+        std::condition_variable cv;
+        
+        cv.wait( l, []() { return false; } );
+    }
     
     return 0;
 }

@@ -75,6 +75,7 @@ namespace Dispatch
             void async(      const Action & action );
             void asyncAfter( const Action & action, const Interval & interval );
             void schedule(   const Timer & timer );
+            void unschedule( const Timer & timer );
             
         private:
             

@@ -33,6 +33,7 @@
 #include <memory>
 #include <algorithm>
 #include <Dispatch/Timer.hpp>
+#include <Dispatch/Action.hpp>
 
 namespace Dispatch
 {

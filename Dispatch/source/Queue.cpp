@@ -176,7 +176,12 @@ namespace Dispatch
     
     void Queue::schedule( const Timer & timer )
     {
-        ( void )timer;
+        this->impl->_rl.addTimer( timer );
+    }
+    
+    void Queue::unschedule( const Timer & timer )
+    {
+        this->impl->_rl.removeTimer( timer );
     }
     
     Queue::IMPL::IMPL( const std::string & label, Kind kind, Thread::Priority priority ):

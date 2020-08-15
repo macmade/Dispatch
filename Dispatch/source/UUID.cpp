@@ -28,6 +28,7 @@
  */
 
 #include <Dispatch/UUID.hpp>
+#include <iostream>
 
 #ifdef __APPLE__
 #include <uuid/uuid.h>
@@ -129,5 +130,8 @@ namespace Dispatch
     
     UUID::IMPL::IMPL( const IMPL & o ):
         _uuid( o._uuid )
+    {}
+    
+    UUID::IMPL::~IMPL()
     {}
 }

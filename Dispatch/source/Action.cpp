@@ -35,13 +35,15 @@ namespace Dispatch
     {
         public:
             
-            IMPL();
+            IMPL( const std::function< void( void ) > & f );
             IMPL( const IMPL & o );
             ~IMPL();
+            
+            std::function< void() > _f;
     };
     
-    Action::Action():
-        impl( std::make_unique< IMPL >() )
+    Action::Action( const std::function< void() > & f ):
+        impl( std::make_unique< IMPL >( f ) )
     {}
     
     Action::Action( const Action & o ):
@@ -62,6 +64,19 @@ namespace Dispatch
         return *( this );
     }
     
+    void Action::operator ()() const
+    {
+        this->execute();
+    }
+    
+    void Action::execute() const
+    {
+        if( this->impl->_f != nullptr )
+        {
+            this->impl->_f();
+        }
+    }
+    
     void swap( Action & o1, Action & o2 )
     {
         using std::swap;
@@ -69,13 +84,13 @@ namespace Dispatch
         swap( o1.impl, o2.impl );
     }
     
-    Action::IMPL::IMPL()
+    Action::IMPL::IMPL( const std::function< void() > & f ):
+        _f( f )
     {}
     
-    Action::IMPL::IMPL( const IMPL & o )
-    {
-        ( void )o;
-    }
+    Action::IMPL::IMPL( const IMPL & o ):
+        _f( o._f )
+    {}
     
     Action::IMPL::~IMPL()
     {}
