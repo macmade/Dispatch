@@ -76,8 +76,9 @@ namespace Dispatch
             
             Interval & operator =( Interval o );
             
-            uint64_t value() const;
-            Kind     kind()  const;
+            uint64_t value()       const;
+            Kind     kind()        const;
+            uint64_t nanoseconds() const;
             
             friend void swap( Interval & o1, Interval & o2 );
             

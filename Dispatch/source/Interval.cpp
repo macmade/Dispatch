@@ -110,6 +110,20 @@ namespace Dispatch
         return this->impl->_kind;
     }
     
+    uint64_t Interval::nanoseconds() const
+    {
+        switch( this->impl->_kind )
+        {
+            case Kind::Nanoseconds:  return this->impl->_value;
+            case Kind::Microseconds: return this->impl->_value * 1000;
+            case Kind::Milliseconds: return this->impl->_value * 1000 * 1000;
+            case Kind::Seconds:      return this->impl->_value * 1000 * 1000 * 1000;
+            case Kind::Minutes:      return this->impl->_value * 1000 * 1000 * 1000 * 60;
+            case Kind::Hours:        return this->impl->_value * 1000 * 1000 * 1000 * 60 * 60;
+            case Kind::Days:         return this->impl->_value * 1000 * 1000 * 1000 * 60 * 60 * 24;
+        }
+    }
+    
     void swap( Interval & o1, Interval & o2 )
     {
         using std::swap;

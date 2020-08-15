@@ -569,6 +569,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 05FBE8F524E7EB4B0028EF06 /* Debug.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				GCC_GENERATE_TEST_COVERAGE_FILES = NO;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/Dispatch/include";
@@ -579,6 +582,9 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 05FBE8F624E7EB4B0028EF06 /* Release.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				GCC_GENERATE_TEST_COVERAGE_FILES = NO;
 				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = NO;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/Dispatch/include";

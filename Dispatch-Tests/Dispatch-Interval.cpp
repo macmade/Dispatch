@@ -219,6 +219,25 @@ XSTest( Interval, Kind )
     XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Minutes );
 }
 
+XSTest( Interval, Nanoseconds )
+{
+    Dispatch::Interval i1( 42, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i2( 42, Dispatch::Interval::Kind::Microseconds );
+    Dispatch::Interval i3( 42, Dispatch::Interval::Kind::Milliseconds );
+    Dispatch::Interval i4( 42, Dispatch::Interval::Kind::Seconds );
+    Dispatch::Interval i5( 42, Dispatch::Interval::Kind::Minutes );
+    Dispatch::Interval i6( 42, Dispatch::Interval::Kind::Hours );
+    Dispatch::Interval i7( 42, Dispatch::Interval::Kind::Days );
+
+    XSTestAssertEqual( i1.nanoseconds(), 42ULL );
+    XSTestAssertEqual( i2.nanoseconds(), 42000ULL );
+    XSTestAssertEqual( i3.nanoseconds(), 42000000ULL );
+    XSTestAssertEqual( i4.nanoseconds(), 42000000000ULL );
+    XSTestAssertEqual( i5.nanoseconds(), 2520000000000ULL );
+    XSTestAssertEqual( i6.nanoseconds(), 151200000000000ULL );
+    XSTestAssertEqual( i7.nanoseconds(), 3628800000000000ULL );
+}
+
 XSTest( Interval, Swap )
 {
     Dispatch::Interval i1(  0, Dispatch::Interval::Kind::Seconds );
