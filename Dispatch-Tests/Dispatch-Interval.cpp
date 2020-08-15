@@ -338,16 +338,56 @@ XSTest( Interval, OperatorNotEqual )
 }
 
 XSTest( Interval, OperatorLesser )
-{}
+{
+    Dispatch::Interval i1( 42000, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i2( 42001, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i3( 42,    Dispatch::Interval::Kind::Microseconds );
+    
+    XSTestAssertFalse( i1 < i1 );
+    XSTestAssertFalse( i1 < i3 );
+    XSTestAssertTrue(  i1 < i2 );
+    XSTestAssertTrue(  i3 < i2 );
+}
 
 XSTest( Interval, OperatorGreater )
-{}
+{
+    Dispatch::Interval i1( 42000, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i2( 42001, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i3( 42,    Dispatch::Interval::Kind::Microseconds );
+    
+    XSTestAssertFalse( i1 > i1 );
+    XSTestAssertFalse( i1 > i3 );
+    XSTestAssertTrue(  i2 > i1 );
+    XSTestAssertTrue(  i2 > i3 );
+}
 
 XSTest( Interval, OperatorLesserOrEqual )
-{}
+{
+    Dispatch::Interval i1( 42000, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i2( 42001, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i3( 42,    Dispatch::Interval::Kind::Microseconds );
+    
+    XSTestAssertTrue(  i1 <= i1 );
+    XSTestAssertTrue(  i1 <= i3 );
+    XSTestAssertTrue(  i1 <= i2 );
+    XSTestAssertTrue(  i3 <= i2 );
+    XSTestAssertFalse( i2 <= i1 );
+    XSTestAssertFalse( i2 <= i3 );
+}
 
 XSTest( Interval, OperatorGreaterOrEqual )
-{}
+{
+    Dispatch::Interval i1( 42000, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i2( 42001, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i3( 42,    Dispatch::Interval::Kind::Microseconds );
+    
+    XSTestAssertTrue(  i1 >= i1 );
+    XSTestAssertTrue(  i1 >= i3 );
+    XSTestAssertTrue(  i2 >= i1 );
+    XSTestAssertTrue(  i2 >= i3 );
+    XSTestAssertFalse( i1 >= i2 );
+    XSTestAssertFalse( i3 >= i2 );
+}
 
 XSTest( Interval, Value )
 {
