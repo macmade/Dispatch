@@ -92,8 +92,8 @@ namespace Dispatch
             
             Interval & operator =( Interval o );
             
-            uint64_t value()       const;
-            Kind     kind()        const;
+            uint64_t value() const;
+            Kind     kind()  const;
             
             operator std::chrono::nanoseconds()  const;
             operator std::chrono::microseconds() const;
