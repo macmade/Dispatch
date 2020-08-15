@@ -33,6 +33,7 @@
 #include <memory>
 #include <algorithm>
 #include <cstdint>
+#include <chrono>
 
 namespace Dispatch
 {
@@ -54,6 +55,15 @@ namespace Dispatch
             static Interval FromMinutes(      uint64_t value );
             static Interval FromHours(        uint64_t value );
             static Interval FromDays(         uint64_t value );
+            
+            template< class T, class U >
+            Interval( const std::chrono::duration< T, U > & duration ):
+                Interval
+                (
+                    ( duration.count() < 0 ) ? 0 : std::chrono::duration_cast< std::chrono::milliseconds >( duration ).count(),
+                    Kind::Milliseconds
+                )
+            {}
             
             Interval( uint64_t value, Kind kind );
             Interval( const Interval & o );
