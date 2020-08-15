@@ -1,3 +1,5 @@
 language: objective-c
-xcode_project: Dispatch.xcodeproj
-xcode_scheme: Dispatch
+script:
+xcodebuild -project "Dispatch.xcodeproj" -scheme "Test" build
+notifications:
+    slack: xs-labs:FXh1yLXNkpcVxKZhZU6icdhI
