@@ -60,13 +60,86 @@ XSTest( Action, CTOR_FUNC )
 }
 
 XSTest( Action, CCTOR )
-{}
+{
+    int              i( 0 );
+    Dispatch::Action a1( nullptr );
+    Dispatch::Action a2( [ & ]() { i++; } );
+    Dispatch::Action c1( a1 );
+    Dispatch::Action c2( a2 );
+    
+    XSTestAssertTrue( a1 == nullptr );
+    XSTestAssertTrue( c1 == nullptr );
+    XSTestAssertTrue( a2 != nullptr );
+    XSTestAssertTrue( c2 != nullptr );
+    
+    XSTestAssertNoThrow( a1.execute() );
+    XSTestAssertNoThrow( c1.execute() );
+    
+    XSTestAssertEqual( i, 0 );
+    a2.execute();
+    XSTestAssertEqual( i, 1 );
+    c2.execute();
+    XSTestAssertEqual( i, 2 );
+    a2.execute();
+    XSTestAssertEqual( i, 3 );
+    c2.execute();
+    XSTestAssertEqual( i, 4 );
+}
 
 XSTest( Action, MCTOR )
-{}
+{
+    int              i( 0 );
+    Dispatch::Action a1( nullptr );
+    Dispatch::Action a2( [ & ]() { i++; } );
+    Dispatch::Action c1( std::move( a1 ) );
+    Dispatch::Action c2( std::move( a2 ) );
+    
+    XSTestAssertTrue( c1 == nullptr );
+    XSTestAssertTrue( c2 != nullptr );
+    
+    XSTestAssertNoThrow( c1.execute() );
+    
+    XSTestAssertEqual( i, 0 );
+    c2.execute();
+    XSTestAssertEqual( i, 1 );
+    c2.execute();
+    XSTestAssertEqual( i, 2 );
+}
 
 XSTest( Action, OperatorAssign )
-{}
+{
+    int              i( 0 );
+    Dispatch::Action a1( nullptr );
+    Dispatch::Action a2( [ & ]() { i++; } );
+    
+    XSTestAssertTrue(  a1 == nullptr );
+    XSTestAssertFalse( a2 == nullptr );
+    
+    a1 = a2;
+    
+    XSTestAssertFalse( a1 == nullptr );
+    XSTestAssertFalse( a1 == nullptr );
+    
+    XSTestAssertEqual( i, 0 );
+    a1.execute();
+    XSTestAssertEqual( i, 1 );
+    a2.execute();
+    XSTestAssertEqual( i, 2 );
+    a1.execute();
+    XSTestAssertEqual( i, 3 );
+    a2.execute();
+    XSTestAssertEqual( i, 4 );
+    
+    a1 = nullptr;
+    
+    XSTestAssertTrue(  a1 == nullptr );
+    XSTestAssertFalse( a2 == nullptr );
+    
+    a1.execute();
+    XSTestAssertEqual( i, 4 );
+    a2.execute();
+    XSTestAssertEqual( i, 5 );
+}
 
 XSTest( Action, OperatorEqualNull )
 {
@@ -87,10 +160,60 @@ XSTest( Action, OperatorNotEqualNull )
 }
 
 XSTest( Action, OperatorCall )
-{}
+{
+    int              i( 0 );
+    Dispatch::Action a1( nullptr );
+    Dispatch::Action a2( [ & ]() { i++; } );
+    
+    XSTestAssertNoThrow( a1() );
+    
+    XSTestAssertEqual( i, 0 );
+    a2();
+    XSTestAssertEqual( i, 1 );
+    a2();
+    XSTestAssertEqual( i, 2 );
+}
 
 XSTest( Action, Execute )
-{}
+{
+    int              i( 0 );
+    Dispatch::Action a1( nullptr );
+    Dispatch::Action a2( [ & ]() { i++; } );
+    
+    XSTestAssertNoThrow( a1() );
+    
+    XSTestAssertEqual( i, 0 );
+    a2.execute();
+    XSTestAssertEqual( i, 1 );
+    a2.execute();
+    XSTestAssertEqual( i, 2 );
+}
 
 XSTest( Action, Swap )
-{}
+{
+    int              i( 0 );
+    Dispatch::Action a1( nullptr );
+    Dispatch::Action a2( [ & ]() { i++; } );
+    Dispatch::Action a3( [ & ]() { i += 2; } );
+    
+    XSTestAssertEqual( i, 0 );
+    a2.execute();
+    XSTestAssertEqual( i, 1 );
+    a3.execute();
+    XSTestAssertEqual( i, 3 );
+    
+    swap( a2, a3 );
+    
+    a2.execute();
+    XSTestAssertEqual( i, 5 );
+    a3.execute();
+    XSTestAssertEqual( i, 6 );
+    
+    XSTestAssertTrue(  a1 == nullptr );
+    XSTestAssertFalse( a2 == nullptr );
+    
+    swap( a1, a2 );
+    
+    XSTestAssertFalse( a1 == nullptr );
+    XSTestAssertTrue(  a2 == nullptr );
+}
