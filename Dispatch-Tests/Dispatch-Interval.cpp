@@ -138,6 +138,96 @@ XSTest( Interval, CTOR )
     XSTestAssertEqual( i5.value(), 5ULL );
 }
 
+XSTest( Interval, CTOR_Chrono_Nanoseconds )
+{
+    Dispatch::Interval i1( std::chrono::nanoseconds( -1 ) );
+    Dispatch::Interval i2( std::chrono::nanoseconds(  0 ) );
+    Dispatch::Interval i3( std::chrono::nanoseconds( 42 ) );
+    
+    XSTestAssertEqual( i1.value(),  0ULL );
+    XSTestAssertEqual( i2.value(),  0ULL );
+    XSTestAssertEqual( i3.value(), 42ULL );
+    
+    XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Nanoseconds );
+    XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Nanoseconds );
+    XSTestAssertEqual( i3.kind(), Dispatch::Interval::Kind::Nanoseconds );
+}
+
+XSTest( Interval, CTOR_Chrono_Microseconds )
+{
+    Dispatch::Interval i1( std::chrono::microseconds( -1 ) );
+    Dispatch::Interval i2( std::chrono::microseconds(  0 ) );
+    Dispatch::Interval i3( std::chrono::microseconds( 42 ) );
+    
+    XSTestAssertEqual( i1.value(),  0ULL );
+    XSTestAssertEqual( i2.value(),  0ULL );
+    XSTestAssertEqual( i3.value(), 42ULL );
+    
+    XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Microseconds );
+    XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Microseconds );
+    XSTestAssertEqual( i3.kind(), Dispatch::Interval::Kind::Microseconds );
+}
+
+XSTest( Interval, CTOR_Chrono_Milliseconds )
+{
+    Dispatch::Interval i1( std::chrono::milliseconds( -1 ) );
+    Dispatch::Interval i2( std::chrono::milliseconds(  0 ) );
+    Dispatch::Interval i3( std::chrono::milliseconds( 42 ) );
+    
+    XSTestAssertEqual( i1.value(),  0ULL );
+    XSTestAssertEqual( i2.value(),  0ULL );
+    XSTestAssertEqual( i3.value(), 42ULL );
+    
+    XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Milliseconds );
+    XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Milliseconds );
+    XSTestAssertEqual( i3.kind(), Dispatch::Interval::Kind::Milliseconds );
+}
+
+XSTest( Interval, CTOR_Chrono_Seconds )
+{
+    Dispatch::Interval i1( std::chrono::seconds( -1 ) );
+    Dispatch::Interval i2( std::chrono::seconds(  0 ) );
+    Dispatch::Interval i3( std::chrono::seconds( 42 ) );
+    
+    XSTestAssertEqual( i1.value(),  0ULL );
+    XSTestAssertEqual( i2.value(),  0ULL );
+    XSTestAssertEqual( i3.value(), 42ULL );
+    
+    XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Seconds );
+    XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Seconds );
+    XSTestAssertEqual( i3.kind(), Dispatch::Interval::Kind::Seconds );
+}
+
+XSTest( Interval, CTOR_Chrono_Minutes )
+{
+    Dispatch::Interval i1( std::chrono::minutes( -1 ) );
+    Dispatch::Interval i2( std::chrono::minutes(  0 ) );
+    Dispatch::Interval i3( std::chrono::minutes( 42 ) );
+    
+    XSTestAssertEqual( i1.value(),  0ULL );
+    XSTestAssertEqual( i2.value(),  0ULL );
+    XSTestAssertEqual( i3.value(), 42ULL );
+    
+    XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Minutes );
+    XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Minutes );
+    XSTestAssertEqual( i3.kind(), Dispatch::Interval::Kind::Minutes );
+}
+
+XSTest( Interval, CTOR_Chrono_Hours )
+{
+    Dispatch::Interval i1( std::chrono::hours( -1 ) );
+    Dispatch::Interval i2( std::chrono::hours(  0 ) );
+    Dispatch::Interval i3( std::chrono::hours( 42 ) );
+    
+    XSTestAssertEqual( i1.value(),  0ULL );
+    XSTestAssertEqual( i2.value(),  0ULL );
+    XSTestAssertEqual( i3.value(), 42ULL );
+    
+    XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Hours );
+    XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Hours );
+    XSTestAssertEqual( i3.kind(), Dispatch::Interval::Kind::Hours );
+}
+
 XSTest( Interval, CCTOR )
 {
     Dispatch::Interval i1( 1, Dispatch::Interval::Kind::Milliseconds );

@@ -60,6 +60,7 @@ namespace Dispatch
             static Interval FromHours(        uint64_t value );
             static Interval FromDays(         uint64_t value );
             
+            /*
             template< class T, class U >
             Interval( const std::chrono::duration< T, U > & duration ):
                 Interval
@@ -68,8 +69,15 @@ namespace Dispatch
                     Kind::Nanoseconds
                 )
             {}
+            */
             
             Interval( uint64_t value, Kind kind );
+            Interval( const std::chrono::nanoseconds duration );
+            Interval( const std::chrono::microseconds duration );
+            Interval( const std::chrono::milliseconds duration );
+            Interval( const std::chrono::seconds duration );
+            Interval( const std::chrono::minutes duration );
+            Interval( const std::chrono::hours duration );
             Interval( const Interval & o );
             Interval( Interval && o ) noexcept;
             ~Interval();

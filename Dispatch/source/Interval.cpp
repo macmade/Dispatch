@@ -82,6 +82,54 @@ namespace Dispatch
         impl( std::make_unique< IMPL >( value, kind ) )
     {}
     
+    Interval::Interval( const std::chrono::nanoseconds duration ):
+        Interval
+        (
+            ( duration.count() < 0 ) ? 0 : static_cast< uint64_t >( duration.count() ),
+            Kind::Nanoseconds
+        )
+    {}
+    
+    Interval::Interval( const std::chrono::microseconds duration ):
+        Interval
+        (
+            ( duration.count() < 0 ) ? 0 : static_cast< uint64_t >( duration.count() ),
+            Kind::Microseconds
+        )
+    {}
+    
+    Interval::Interval( const std::chrono::milliseconds duration ):
+        Interval
+        (
+            ( duration.count() < 0 ) ? 0 : static_cast< uint64_t >( duration.count() ),
+            Kind::Milliseconds
+        )
+    {}
+    
+    Interval::Interval( const std::chrono::seconds duration ):
+        Interval
+        (
+            ( duration.count() < 0 ) ? 0 : static_cast< uint64_t >( duration.count() ),
+            Kind::Seconds
+        )
+    {}
+    
+    Interval::Interval( const std::chrono::minutes duration ):
+        Interval
+        (
+            ( duration.count() < 0 ) ? 0 : static_cast< uint64_t >( duration.count() ),
+            Kind::Minutes
+        )
+    {}
+    
+    Interval::Interval( const std::chrono::hours duration ):
+        Interval
+        (
+            ( duration.count() < 0 ) ? 0 : static_cast< uint64_t >( duration.count() ),
+            Kind::Hours
+        )
+    {}
+    
     Interval::Interval( const Interval & o ):
         impl( std::make_unique< IMPL >( *( o.impl ) ) )
     {}
