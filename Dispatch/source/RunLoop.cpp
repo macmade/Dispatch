@@ -31,6 +31,7 @@
 #include <atomic>
 #include <mutex>
 #include <thread>
+#include <vector>
 #include <condition_variable>
 
 namespace Dispatch
@@ -46,6 +47,7 @@ namespace Dispatch
             bool                        _stopping;
             std::recursive_mutex        _rmtx;
             std::condition_variable_any _cv;
+            std::vector< Timer >        _timers;
     };
     
     RunLoop::RunLoop():
@@ -119,6 +121,20 @@ namespace Dispatch
                 return this->impl->_running == false;
             }
         );
+    }
+    
+    void RunLoop::addTimer( const Timer & timer )
+    {
+        std::unique_lock< std::recursive_mutex > l( this->impl->_rmtx );
+        
+        ( void )timer;
+    }
+    
+    void RunLoop::removeTimer( const Timer & timer )
+    {
+        std::unique_lock< std::recursive_mutex > l( this->impl->_rmtx );
+        
+        ( void )timer;
     }
     
     RunLoop::IMPL::IMPL():

@@ -32,6 +32,7 @@
 
 #include <memory>
 #include <algorithm>
+#include <Dispatch/Timer.hpp>
 
 namespace Dispatch
 {
@@ -56,6 +57,9 @@ namespace Dispatch
             RunStatus run();
             void      stop();
             void      waitUntilStopped();
+            
+            void addTimer(    const Timer & timer );
+            void removeTimer( const Timer & timer );
             
         private:
             
