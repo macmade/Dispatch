@@ -51,6 +51,9 @@ namespace Dispatch
             
             Action & operator =( Action o );
             
+            bool operator ==( std::nullptr_t ) const;
+            bool operator !=( std::nullptr_t ) const;
+            
             void operator ()() const;
             
             void execute() const;

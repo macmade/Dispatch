@@ -64,6 +64,16 @@ namespace Dispatch
         return *( this );
     }
     
+    bool Action::operator ==( std::nullptr_t ) const
+    {
+        return this->impl->_f == nullptr;
+    }
+    
+    bool Action::operator !=( std::nullptr_t ) const
+    {
+        return this->impl->_f != nullptr;
+    }
+    
     void Action::operator ()() const
     {
         this->execute();
