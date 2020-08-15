@@ -69,10 +69,22 @@ XSTest( Action, OperatorAssign )
 {}
 
 XSTest( Action, OperatorEqualNull )
-{}
+{
+    Dispatch::Action a1( nullptr );
+    Dispatch::Action a2( []() {} );
+    
+    XSTestAssertTrue(  a1 == nullptr );
+    XSTestAssertFalse( a2 == nullptr );
+}
 
 XSTest( Action, OperatorNotEqualNull )
-{}
+{
+    Dispatch::Action a1( nullptr );
+    Dispatch::Action a2( []() {} );
+    
+    XSTestAssertFalse( a1 != nullptr );
+    XSTestAssertTrue(  a2 != nullptr );
+}
 
 XSTest( Action, OperatorCall )
 {}
