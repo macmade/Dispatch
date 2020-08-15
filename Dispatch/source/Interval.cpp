@@ -43,6 +43,16 @@ namespace Dispatch
             Kind     _kind;
     };
     
+    Interval Interval::FromNanoseconds( uint64_t value )
+    {
+        return { value, Kind::Nanoseconds };
+    }
+    
+    Interval Interval::FromMicroseconds( uint64_t value )
+    {
+        return { value, Kind::Microseconds };
+    }
+    
     Interval Interval::FromMilliseconds( uint64_t value )
     {
         return { value, Kind::Milliseconds };

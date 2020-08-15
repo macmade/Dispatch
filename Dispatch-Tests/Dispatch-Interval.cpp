@@ -30,6 +30,30 @@
 #include <XSTest/XSTest.hpp>
 #include <Dispatch.hpp>
 
+XSTest( Interval, FromNanoseconds )
+{
+    Dispatch::Interval i1 = Dispatch::Interval::FromNanoseconds(  0 );
+    Dispatch::Interval i2 = Dispatch::Interval::FromNanoseconds( 42 );
+    
+    XSTestAssertEqual( i1.value(),  0ULL );
+    XSTestAssertEqual( i2.value(), 42ULL );
+    
+    XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Nanoseconds );
+    XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Nanoseconds );
+}
+
+XSTest( Interval, FromMicroseconds )
+{
+    Dispatch::Interval i1 = Dispatch::Interval::FromMicroseconds(  0 );
+    Dispatch::Interval i2 = Dispatch::Interval::FromMicroseconds( 42 );
+    
+    XSTestAssertEqual( i1.value(),  0ULL );
+    XSTestAssertEqual( i2.value(), 42ULL );
+    
+    XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Microseconds );
+    XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Microseconds );
+}
+
 XSTest( Interval, FromMilliseconds )
 {
     Dispatch::Interval i1 = Dispatch::Interval::FromMilliseconds(  0 );

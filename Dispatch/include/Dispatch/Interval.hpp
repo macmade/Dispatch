@@ -43,6 +43,8 @@ namespace Dispatch
             
             enum class Kind: int
             {
+                Nanoseconds,
+                Microseconds,
                 Milliseconds,
                 Seconds,
                 Minutes,
@@ -50,6 +52,8 @@ namespace Dispatch
                 Days
             };
             
+            static Interval FromNanoseconds(  uint64_t value );
+            static Interval FromMicroseconds( uint64_t value );
             static Interval FromMilliseconds( uint64_t value );
             static Interval FromSeconds(      uint64_t value );
             static Interval FromMinutes(      uint64_t value );
@@ -60,8 +64,8 @@ namespace Dispatch
             Interval( const std::chrono::duration< T, U > & duration ):
                 Interval
                 (
-                    ( duration.count() < 0 ) ? 0 : std::chrono::duration_cast< std::chrono::milliseconds >( duration ).count(),
-                    Kind::Milliseconds
+                    ( duration.count() < 0 ) ? 0 : std::chrono::duration_cast< std::chrono::nanoseconds >( duration ).count(),
+                    Kind::Nanoseconds
                 )
             {}
             
