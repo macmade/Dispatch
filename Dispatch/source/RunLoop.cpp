@@ -44,13 +44,13 @@ namespace Dispatch
             IMPL();
             ~IMPL();
             
-            bool                              _running;
-            bool                              _stopping;
-            bool                              _update;
-            std::chrono::duration< uint64_t > _sleep;
-            std::recursive_mutex              _rmtx;
-            std::condition_variable_any       _cv;
-            std::vector< Timer >              _timers;
+            bool                        _running;
+            bool                        _stopping;
+            bool                        _update;
+            Interval                    _sleep;
+            std::recursive_mutex        _rmtx;
+            std::condition_variable_any _cv;
+            std::vector< Timer >        _timers;
     };
     
     RunLoop::RunLoop():
@@ -66,7 +66,7 @@ namespace Dispatch
         
         while( true )
         {
-            std::chrono::duration< uint64_t > sleep;
+            Interval sleep = { 0, Interval::Kind::Nanoseconds };
             
             {
                 std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
@@ -111,7 +111,7 @@ namespace Dispatch
                 this->impl->_cv.wait_for
                 (
                     l,
-                    sleep,
+                    sleep.nanoseconds(),
                     [ & ]() -> bool
                     {
                         return this->impl->_update;
@@ -197,7 +197,7 @@ namespace Dispatch
         _running(  false ),
         _stopping( false ),
         _update(   false ),
-        _sleep(    std::chrono::seconds( 60 ) )
+        _sleep(    { 60, Interval::Kind::Seconds } )
     {}
     
     RunLoop::IMPL::~IMPL()

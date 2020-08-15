@@ -31,6 +31,7 @@
 #define DISPATCH_THREAD_HPP
 
 #include <string>
+#include <Dispatch/Interval.hpp>
 
 namespace Dispatch
 {
@@ -47,6 +48,7 @@ namespace Dispatch
             
             static void SetPriority( Priority priority );
             static void SetName( const std::string & name );
+            static void Sleep( const Interval & interval );
             
             Thread()                              = delete;
             Thread( const Thread & )              = delete;

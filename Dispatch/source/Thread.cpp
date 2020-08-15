@@ -28,6 +28,7 @@
  */
 
 #include <Dispatch/Thread.hpp>
+#include <thread>
 
 #ifdef __APPLE__
 #include <pthread.h>
@@ -67,5 +68,10 @@ namespace Dispatch
         pthread_setname_np( name.c_str() );
         
         #endif
+    }
+    
+    void Thread::Sleep( const Interval & interval )
+    {
+        std::this_thread::sleep_for( interval.nanoseconds() );
     }
 }
