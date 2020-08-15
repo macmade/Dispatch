@@ -158,18 +158,75 @@ namespace Dispatch
         return this->impl->_kind;
     }
     
-    uint64_t Interval::nanoseconds() const
+    Interval::operator std::chrono::nanoseconds() const
     {
+        return this->nanoseconds();
+    }
+    
+    Interval::operator std::chrono::microseconds() const
+    {
+        return this->microseconds();
+    }
+    
+    Interval::operator std::chrono::milliseconds() const
+    {
+        return this->milliseconds();
+    }
+    
+    Interval::operator std::chrono::seconds() const
+    {
+        return this->seconds();
+    }
+    
+    Interval::operator std::chrono::minutes() const
+    {
+        return this->minutes();
+    }
+    
+    Interval::operator std::chrono::hours() const
+    {
+        return this->hours();
+    }
+    
+    std::chrono::nanoseconds Interval::nanoseconds()  const
+    {
+        int64_t value( static_cast< int64_t >( this->impl->_value ) );
+        
         switch( this->impl->_kind )
         {
-            case Kind::Nanoseconds:  return this->impl->_value;
-            case Kind::Microseconds: return this->impl->_value * 1000;
-            case Kind::Milliseconds: return this->impl->_value * 1000 * 1000;
-            case Kind::Seconds:      return this->impl->_value * 1000 * 1000 * 1000;
-            case Kind::Minutes:      return this->impl->_value * 1000 * 1000 * 1000 * 60;
-            case Kind::Hours:        return this->impl->_value * 1000 * 1000 * 1000 * 60 * 60;
-            case Kind::Days:         return this->impl->_value * 1000 * 1000 * 1000 * 60 * 60 * 24;
+            case Kind::Nanoseconds:  return std::chrono::nanoseconds( value );
+            case Kind::Microseconds: return std::chrono::nanoseconds( value * 1000 );
+            case Kind::Milliseconds: return std::chrono::nanoseconds( value * 1000 * 1000 );
+            case Kind::Seconds:      return std::chrono::nanoseconds( value * 1000 * 1000 * 1000 );
+            case Kind::Minutes:      return std::chrono::nanoseconds( value * 1000 * 1000 * 1000 * 60 );
+            case Kind::Hours:        return std::chrono::nanoseconds( value * 1000 * 1000 * 1000 * 60 * 60 );
+            case Kind::Days:         return std::chrono::nanoseconds( value * 1000 * 1000 * 1000 * 60 * 60 * 24 );
         }
+    }
+    
+    std::chrono::microseconds Interval::microseconds() const
+    {
+        return std::chrono::duration_cast< std::chrono::microseconds >( this->nanoseconds() );
+    }
+    
+    std::chrono::milliseconds Interval::milliseconds() const
+    {
+        return std::chrono::duration_cast< std::chrono::milliseconds >( this->nanoseconds() );
+    }
+    
+    std::chrono::seconds Interval::seconds() const
+    {
+        return std::chrono::duration_cast< std::chrono::seconds >( this->nanoseconds() );
+    }
+    
+    std::chrono::minutes Interval::minutes() const
+    {
+        return std::chrono::duration_cast< std::chrono::minutes >( this->nanoseconds() );
+    }
+    
+    std::chrono::hours Interval::hours() const
+    {
+        return std::chrono::duration_cast< std::chrono::hours >( this->nanoseconds() );
     }
     
     void swap( Interval & o1, Interval & o2 )

@@ -114,8 +114,30 @@ XSTest( Interval, FromDays )
     XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Days );
 }
 
-XSTest( Interval, CTOR_Duration )
-{}
+XSTest( Interval, CTOR_Duration_Signed )
+{
+    std::chrono::duration< int16_t, std::milli > d1( -1 );
+    std::chrono::duration< int16_t, std::milli > d2( 0 );
+    std::chrono::duration< int16_t, std::milli > d3( 42 );
+    Dispatch::Interval                           i1( d1 );
+    Dispatch::Interval                           i2( d2 );
+    Dispatch::Interval                           i3( d3 );
+    
+    XSTestAssertEqual( i1.nanoseconds().count(), 0 );
+    XSTestAssertEqual( i2.nanoseconds().count(), 0 );
+    XSTestAssertEqual( i3.nanoseconds().count(), 42000000 );
+}
+
+XSTest( Interval, CTOR_Duration_Unsigned )
+{
+    std::chrono::duration< uint16_t, std::milli > d1( 0 );
+    std::chrono::duration< uint16_t, std::milli > d2( 42 );
+    Dispatch::Interval                            i1( d1 );
+    Dispatch::Interval                            i2( d2 );
+    
+    XSTestAssertEqual( i1.nanoseconds().count(), 0 );
+    XSTestAssertEqual( i2.nanoseconds().count(), 42000000 );
+}
 
 XSTest( Interval, CTOR )
 {
@@ -309,6 +331,120 @@ XSTest( Interval, Kind )
     XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Minutes );
 }
 
+XSTest( Interval, Operator_Chrono_Nanoseconds )
+{
+    Dispatch::Interval i1( 42, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i2( 42, Dispatch::Interval::Kind::Microseconds );
+    Dispatch::Interval i3( 42, Dispatch::Interval::Kind::Milliseconds );
+    Dispatch::Interval i4( 42, Dispatch::Interval::Kind::Seconds );
+    Dispatch::Interval i5( 42, Dispatch::Interval::Kind::Minutes );
+    Dispatch::Interval i6( 42, Dispatch::Interval::Kind::Hours );
+    Dispatch::Interval i7( 42, Dispatch::Interval::Kind::Days );
+
+    XSTestAssertEqual( static_cast< std::chrono::nanoseconds >( i1 ).count(), 42 );
+    XSTestAssertEqual( static_cast< std::chrono::nanoseconds >( i2 ).count(), 42000 );
+    XSTestAssertEqual( static_cast< std::chrono::nanoseconds >( i3 ).count(), 42000000 );
+    XSTestAssertEqual( static_cast< std::chrono::nanoseconds >( i4 ).count(), 42000000000 );
+    XSTestAssertEqual( static_cast< std::chrono::nanoseconds >( i5 ).count(), 2520000000000 );
+    XSTestAssertEqual( static_cast< std::chrono::nanoseconds >( i6 ).count(), 151200000000000 );
+    XSTestAssertEqual( static_cast< std::chrono::nanoseconds >( i7 ).count(), 3628800000000000 );
+}
+
+XSTest( Interval, Operator_Chrono_Microseconds )
+{
+    Dispatch::Interval i1( 42, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i2( 42, Dispatch::Interval::Kind::Microseconds );
+    Dispatch::Interval i3( 42, Dispatch::Interval::Kind::Milliseconds );
+    Dispatch::Interval i4( 42, Dispatch::Interval::Kind::Seconds );
+    Dispatch::Interval i5( 42, Dispatch::Interval::Kind::Minutes );
+    Dispatch::Interval i6( 42, Dispatch::Interval::Kind::Hours );
+    Dispatch::Interval i7( 42, Dispatch::Interval::Kind::Days );
+
+    XSTestAssertEqual( static_cast< std::chrono::microseconds >( i1 ).count(), 0 );
+    XSTestAssertEqual( static_cast< std::chrono::microseconds >( i2 ).count(), 42 );
+    XSTestAssertEqual( static_cast< std::chrono::microseconds >( i3 ).count(), 42000 );
+    XSTestAssertEqual( static_cast< std::chrono::microseconds >( i4 ).count(), 42000000 );
+    XSTestAssertEqual( static_cast< std::chrono::microseconds >( i5 ).count(), 2520000000 );
+    XSTestAssertEqual( static_cast< std::chrono::microseconds >( i6 ).count(), 151200000000 );
+    XSTestAssertEqual( static_cast< std::chrono::microseconds >( i7 ).count(), 3628800000000 );
+}
+
+XSTest( Interval, Operator_Chrono_Milliseconds )
+{
+    Dispatch::Interval i1( 42, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i2( 42, Dispatch::Interval::Kind::Microseconds );
+    Dispatch::Interval i3( 42, Dispatch::Interval::Kind::Milliseconds );
+    Dispatch::Interval i4( 42, Dispatch::Interval::Kind::Seconds );
+    Dispatch::Interval i5( 42, Dispatch::Interval::Kind::Minutes );
+    Dispatch::Interval i6( 42, Dispatch::Interval::Kind::Hours );
+    Dispatch::Interval i7( 42, Dispatch::Interval::Kind::Days );
+
+    XSTestAssertEqual( static_cast< std::chrono::milliseconds >( i1 ).count(), 0 );
+    XSTestAssertEqual( static_cast< std::chrono::milliseconds >( i2 ).count(), 0 );
+    XSTestAssertEqual( static_cast< std::chrono::milliseconds >( i3 ).count(), 42 );
+    XSTestAssertEqual( static_cast< std::chrono::milliseconds >( i4 ).count(), 42000 );
+    XSTestAssertEqual( static_cast< std::chrono::milliseconds >( i5 ).count(), 2520000 );
+    XSTestAssertEqual( static_cast< std::chrono::milliseconds >( i6 ).count(), 151200000 );
+    XSTestAssertEqual( static_cast< std::chrono::milliseconds >( i7 ).count(), 3628800000 );
+}
+
+XSTest( Interval, Operator_Chrono_Seconds )
+{
+    Dispatch::Interval i1( 42, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i2( 42, Dispatch::Interval::Kind::Microseconds );
+    Dispatch::Interval i3( 42, Dispatch::Interval::Kind::Milliseconds );
+    Dispatch::Interval i4( 42, Dispatch::Interval::Kind::Seconds );
+    Dispatch::Interval i5( 42, Dispatch::Interval::Kind::Minutes );
+    Dispatch::Interval i6( 42, Dispatch::Interval::Kind::Hours );
+    Dispatch::Interval i7( 42, Dispatch::Interval::Kind::Days );
+
+    XSTestAssertEqual( static_cast< std::chrono::seconds >( i1 ).count(), 0 );
+    XSTestAssertEqual( static_cast< std::chrono::seconds >( i2 ).count(), 0 );
+    XSTestAssertEqual( static_cast< std::chrono::seconds >( i3 ).count(), 0 );
+    XSTestAssertEqual( static_cast< std::chrono::seconds >( i4 ).count(), 42 );
+    XSTestAssertEqual( static_cast< std::chrono::seconds >( i5 ).count(), 2520 );
+    XSTestAssertEqual( static_cast< std::chrono::seconds >( i6 ).count(), 151200 );
+    XSTestAssertEqual( static_cast< std::chrono::seconds >( i7 ).count(), 3628800 );
+}
+
+XSTest( Interval, Operator_Chrono_Minutes )
+{
+    Dispatch::Interval i1( 42, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i2( 42, Dispatch::Interval::Kind::Microseconds );
+    Dispatch::Interval i3( 42, Dispatch::Interval::Kind::Milliseconds );
+    Dispatch::Interval i4( 42, Dispatch::Interval::Kind::Seconds );
+    Dispatch::Interval i5( 42, Dispatch::Interval::Kind::Minutes );
+    Dispatch::Interval i6( 42, Dispatch::Interval::Kind::Hours );
+    Dispatch::Interval i7( 42, Dispatch::Interval::Kind::Days );
+
+    XSTestAssertEqual( static_cast< std::chrono::minutes >( i1 ).count(), 0 );
+    XSTestAssertEqual( static_cast< std::chrono::minutes >( i2 ).count(), 0 );
+    XSTestAssertEqual( static_cast< std::chrono::minutes >( i3 ).count(), 0 );
+    XSTestAssertEqual( static_cast< std::chrono::minutes >( i4 ).count(), 0 );
+    XSTestAssertEqual( static_cast< std::chrono::minutes >( i5 ).count(), 42 );
+    XSTestAssertEqual( static_cast< std::chrono::minutes >( i6 ).count(), 2520 );
+    XSTestAssertEqual( static_cast< std::chrono::minutes >( i7 ).count(), 60480 );
+}
+
+XSTest( Interval, Operator_Chrono_Hours )
+{
+    Dispatch::Interval i1( 42, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i2( 42, Dispatch::Interval::Kind::Microseconds );
+    Dispatch::Interval i3( 42, Dispatch::Interval::Kind::Milliseconds );
+    Dispatch::Interval i4( 42, Dispatch::Interval::Kind::Seconds );
+    Dispatch::Interval i5( 42, Dispatch::Interval::Kind::Minutes );
+    Dispatch::Interval i6( 42, Dispatch::Interval::Kind::Hours );
+    Dispatch::Interval i7( 42, Dispatch::Interval::Kind::Days );
+
+    XSTestAssertEqual( static_cast< std::chrono::hours >( i1 ).count(), 0 );
+    XSTestAssertEqual( static_cast< std::chrono::hours >( i2 ).count(), 0 );
+    XSTestAssertEqual( static_cast< std::chrono::hours >( i3 ).count(), 0 );
+    XSTestAssertEqual( static_cast< std::chrono::hours >( i4 ).count(), 0 );
+    XSTestAssertEqual( static_cast< std::chrono::hours >( i5 ).count(), 0 );
+    XSTestAssertEqual( static_cast< std::chrono::hours >( i6 ).count(), 42 );
+    XSTestAssertEqual( static_cast< std::chrono::hours >( i7 ).count(), 1008 );
+}
+
 XSTest( Interval, Nanoseconds )
 {
     Dispatch::Interval i1( 42, Dispatch::Interval::Kind::Nanoseconds );
@@ -319,13 +455,162 @@ XSTest( Interval, Nanoseconds )
     Dispatch::Interval i6( 42, Dispatch::Interval::Kind::Hours );
     Dispatch::Interval i7( 42, Dispatch::Interval::Kind::Days );
 
-    XSTestAssertEqual( i1.nanoseconds(), 42ULL );
-    XSTestAssertEqual( i2.nanoseconds(), 42000ULL );
-    XSTestAssertEqual( i3.nanoseconds(), 42000000ULL );
-    XSTestAssertEqual( i4.nanoseconds(), 42000000000ULL );
-    XSTestAssertEqual( i5.nanoseconds(), 2520000000000ULL );
-    XSTestAssertEqual( i6.nanoseconds(), 151200000000000ULL );
-    XSTestAssertEqual( i7.nanoseconds(), 3628800000000000ULL );
+    XSTestAssertEqual( i1.nanoseconds().count(), 42 );
+    XSTestAssertEqual( i2.nanoseconds().count(), 42000 );
+    XSTestAssertEqual( i3.nanoseconds().count(), 42000000 );
+    XSTestAssertEqual( i4.nanoseconds().count(), 42000000000 );
+    XSTestAssertEqual( i5.nanoseconds().count(), 2520000000000 );
+    XSTestAssertEqual( i6.nanoseconds().count(), 151200000000000 );
+    XSTestAssertEqual( i7.nanoseconds().count(), 3628800000000000 );
+}
+
+XSTest( Interval, Microseconds )
+{
+    Dispatch::Interval i1( 42, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i2( 42, Dispatch::Interval::Kind::Microseconds );
+    Dispatch::Interval i3( 42, Dispatch::Interval::Kind::Milliseconds );
+    Dispatch::Interval i4( 42, Dispatch::Interval::Kind::Seconds );
+    Dispatch::Interval i5( 42, Dispatch::Interval::Kind::Minutes );
+    Dispatch::Interval i6( 42, Dispatch::Interval::Kind::Hours );
+    Dispatch::Interval i7( 42, Dispatch::Interval::Kind::Days );
+
+    XSTestAssertEqual( i1.microseconds().count(), 0 );
+    XSTestAssertEqual( i2.microseconds().count(), 42 );
+    XSTestAssertEqual( i3.microseconds().count(), 42000 );
+    XSTestAssertEqual( i4.microseconds().count(), 42000000 );
+    XSTestAssertEqual( i5.microseconds().count(), 2520000000 );
+    XSTestAssertEqual( i6.microseconds().count(), 151200000000 );
+    XSTestAssertEqual( i7.microseconds().count(), 3628800000000 );
+}
+
+XSTest( Interval, Milliseconds )
+{
+    Dispatch::Interval i1( 42, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i2( 42, Dispatch::Interval::Kind::Microseconds );
+    Dispatch::Interval i3( 42, Dispatch::Interval::Kind::Milliseconds );
+    Dispatch::Interval i4( 42, Dispatch::Interval::Kind::Seconds );
+    Dispatch::Interval i5( 42, Dispatch::Interval::Kind::Minutes );
+    Dispatch::Interval i6( 42, Dispatch::Interval::Kind::Hours );
+    Dispatch::Interval i7( 42, Dispatch::Interval::Kind::Days );
+
+    XSTestAssertEqual( i1.milliseconds().count(), 0 );
+    XSTestAssertEqual( i2.milliseconds().count(), 0 );
+    XSTestAssertEqual( i3.milliseconds().count(), 42 );
+    XSTestAssertEqual( i4.milliseconds().count(), 42000 );
+    XSTestAssertEqual( i5.milliseconds().count(), 2520000 );
+    XSTestAssertEqual( i6.milliseconds().count(), 151200000 );
+    XSTestAssertEqual( i7.milliseconds().count(), 3628800000 );
+}
+
+XSTest( Interval, Seconds )
+{
+    Dispatch::Interval i1( 42, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i2( 42, Dispatch::Interval::Kind::Microseconds );
+    Dispatch::Interval i3( 42, Dispatch::Interval::Kind::Milliseconds );
+    Dispatch::Interval i4( 42, Dispatch::Interval::Kind::Seconds );
+    Dispatch::Interval i5( 42, Dispatch::Interval::Kind::Minutes );
+    Dispatch::Interval i6( 42, Dispatch::Interval::Kind::Hours );
+    Dispatch::Interval i7( 42, Dispatch::Interval::Kind::Days );
+
+    XSTestAssertEqual( i1.seconds().count(), 0 );
+    XSTestAssertEqual( i2.seconds().count(), 0 );
+    XSTestAssertEqual( i3.seconds().count(), 0 );
+    XSTestAssertEqual( i4.seconds().count(), 42 );
+    XSTestAssertEqual( i5.seconds().count(), 2520 );
+    XSTestAssertEqual( i6.seconds().count(), 151200 );
+    XSTestAssertEqual( i7.seconds().count(), 3628800 );
+}
+
+XSTest( Interval, Minutes )
+{
+    Dispatch::Interval i1( 42, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i2( 42, Dispatch::Interval::Kind::Microseconds );
+    Dispatch::Interval i3( 42, Dispatch::Interval::Kind::Milliseconds );
+    Dispatch::Interval i4( 42, Dispatch::Interval::Kind::Seconds );
+    Dispatch::Interval i5( 42, Dispatch::Interval::Kind::Minutes );
+    Dispatch::Interval i6( 42, Dispatch::Interval::Kind::Hours );
+    Dispatch::Interval i7( 42, Dispatch::Interval::Kind::Days );
+
+    XSTestAssertEqual( i1.minutes().count(), 0 );
+    XSTestAssertEqual( i2.minutes().count(), 0 );
+    XSTestAssertEqual( i3.minutes().count(), 0 );
+    XSTestAssertEqual( i4.minutes().count(), 0 );
+    XSTestAssertEqual( i5.minutes().count(), 42 );
+    XSTestAssertEqual( i6.minutes().count(), 2520 );
+    XSTestAssertEqual( i7.minutes().count(), 60480 );
+}
+
+XSTest( Interval, Hours )
+{
+    Dispatch::Interval i1( 42, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i2( 42, Dispatch::Interval::Kind::Microseconds );
+    Dispatch::Interval i3( 42, Dispatch::Interval::Kind::Milliseconds );
+    Dispatch::Interval i4( 42, Dispatch::Interval::Kind::Seconds );
+    Dispatch::Interval i5( 42, Dispatch::Interval::Kind::Minutes );
+    Dispatch::Interval i6( 42, Dispatch::Interval::Kind::Hours );
+    Dispatch::Interval i7( 42, Dispatch::Interval::Kind::Days );
+
+    XSTestAssertEqual( i1.hours().count(), 0 );
+    XSTestAssertEqual( i2.hours().count(), 0 );
+    XSTestAssertEqual( i3.hours().count(), 0 );
+    XSTestAssertEqual( i4.hours().count(), 0 );
+    XSTestAssertEqual( i5.hours().count(), 0 );
+    XSTestAssertEqual( i6.hours().count(), 42 );
+    XSTestAssertEqual( i7.hours().count(), 1008 );
+}
+
+XSTest( Interval, OoeratorDuration )
+{
+    Dispatch::Interval i1( 42, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i2( 42, Dispatch::Interval::Kind::Days );
+    
+    XSTestAssertEqual( ( static_cast< std::chrono::duration< int64_t, std::nano > >( i1 ).count() ), 42 );
+    XSTestAssertEqual( ( static_cast< std::chrono::duration< int64_t, std::nano > >( i2 ).count() ), 3628800000000000 );
+    
+    XSTestAssertEqual( ( static_cast< std::chrono::duration< int64_t, std::micro > >( i1 ).count() ), 0 );
+    XSTestAssertEqual( ( static_cast< std::chrono::duration< int64_t, std::micro > >( i2 ).count() ), 3628800000000 );
+    
+    XSTestAssertEqual( ( static_cast< std::chrono::duration< int64_t, std::milli > >( i1 ).count() ), 0 );
+    XSTestAssertEqual( ( static_cast< std::chrono::duration< int64_t, std::milli > >( i2 ).count() ), 3628800000 );
+    
+    XSTestAssertEqual( ( static_cast< std::chrono::duration< int64_t, std::ratio< 1 > > >( i1 ).count() ), 0 );
+    XSTestAssertEqual( ( static_cast< std::chrono::duration< int64_t, std::ratio< 1 > > >( i2 ).count() ), 3628800 );
+    
+    XSTestAssertEqual( ( static_cast< std::chrono::duration< int64_t, std::ratio< 60 > > >( i1 ).count() ), 0 );
+    XSTestAssertEqual( ( static_cast< std::chrono::duration< int64_t, std::ratio< 60 > > >( i2 ).count() ), 60480 );
+    
+    XSTestAssertEqual( ( static_cast< std::chrono::duration< int64_t, std::ratio< 3600 > > >( i1 ).count() ), 0 );
+    XSTestAssertEqual( ( static_cast< std::chrono::duration< int64_t, std::ratio< 3600 > > >( i2 ).count() ), 1008 );
+    
+    XSTestAssertEqual( ( static_cast< std::chrono::duration< int64_t, std::ratio< 86400 > > >( i1 ).count() ), 0 );
+    XSTestAssertEqual( ( static_cast< std::chrono::duration< int64_t, std::ratio< 86400 > > >( i2 ).count() ), 42 );
+}
+
+XSTest( Interval, Duration )
+{
+    Dispatch::Interval i1( 42, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i2( 42, Dispatch::Interval::Kind::Days );
+    
+    XSTestAssertEqual( ( i1.duration< int64_t, std::nano >().count() ), 42 );
+    XSTestAssertEqual( ( i2.duration< int64_t, std::nano >().count() ), 3628800000000000 );
+    
+    XSTestAssertEqual( ( i1.duration< int64_t, std::micro >().count() ), 0 );
+    XSTestAssertEqual( ( i2.duration< int64_t, std::micro >().count() ), 3628800000000 );
+    
+    XSTestAssertEqual( ( i1.duration< int64_t, std::milli >().count() ), 0 );
+    XSTestAssertEqual( ( i2.duration< int64_t, std::milli >().count() ), 3628800000 );
+    
+    XSTestAssertEqual( ( i1.duration< int64_t, std::ratio< 1 > >().count() ), 0 );
+    XSTestAssertEqual( ( i2.duration< int64_t, std::ratio< 1 > >().count() ), 3628800 );
+    
+    XSTestAssertEqual( ( i1.duration< int64_t, std::ratio< 60 > >().count() ), 0 );
+    XSTestAssertEqual( ( i2.duration< int64_t, std::ratio< 60 > >().count() ), 60480 );
+    
+    XSTestAssertEqual( ( i1.duration< int64_t, std::ratio< 3600 > >().count() ), 0 );
+    XSTestAssertEqual( ( i2.duration< int64_t, std::ratio< 3600 > >().count() ), 1008 );
+    
+    XSTestAssertEqual( ( i1.duration< int64_t, std::ratio< 86400 > >().count() ), 0 );
+    XSTestAssertEqual( ( i2.duration< int64_t, std::ratio< 86400 > >().count() ), 42 );
 }
 
 XSTest( Interval, Swap )

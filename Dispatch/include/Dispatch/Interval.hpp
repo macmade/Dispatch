@@ -34,6 +34,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <chrono>
+#include <type_traits>
 
 namespace Dispatch
 {
@@ -60,16 +61,23 @@ namespace Dispatch
             static Interval FromHours(        uint64_t value );
             static Interval FromDays(         uint64_t value );
             
-            /*
             template< class T, class U >
-            Interval( const std::chrono::duration< T, U > & duration ):
+            Interval( const std::chrono::duration< T, U > & duration, typename std::enable_if< std::is_signed< T >::value >::type * = nullptr ):
                 Interval
                 (
-                    ( duration.count() < 0 ) ? 0 : std::chrono::duration_cast< std::chrono::nanoseconds >( duration ).count(),
+                    ( duration.count() < 0 ) ? 0 : static_cast< uint64_t >( std::chrono::duration_cast< std::chrono::nanoseconds >( duration ).count() ),
                     Kind::Nanoseconds
                 )
             {}
-            */
+            
+            template< class T, class U >
+            Interval( const std::chrono::duration< T, U > & duration, typename std::enable_if< std::is_unsigned< T >::value >::type * = nullptr ):
+                Interval
+                (
+                    std::chrono::duration_cast< std::chrono::duration< uint64_t, std::nano > >( duration ).count(),
+                    Kind::Nanoseconds
+                )
+            {}
             
             Interval( uint64_t value, Kind kind );
             Interval( const std::chrono::nanoseconds duration );
@@ -86,7 +94,34 @@ namespace Dispatch
             
             uint64_t value()       const;
             Kind     kind()        const;
-            uint64_t nanoseconds() const;
+            
+            operator std::chrono::nanoseconds()  const;
+            operator std::chrono::microseconds() const;
+            operator std::chrono::milliseconds() const;
+            operator std::chrono::seconds()      const;
+            operator std::chrono::minutes()      const;
+            operator std::chrono::hours()        const;
+            
+            std::chrono::nanoseconds  nanoseconds()  const;
+            std::chrono::microseconds microseconds() const;
+            std::chrono::milliseconds milliseconds() const;
+            std::chrono::seconds      seconds()      const;
+            std::chrono::minutes      minutes()      const;
+            std::chrono::hours        hours()        const;
+            
+            template< typename T, typename U >
+            operator std::chrono::duration< T, U > () const
+            {
+                return this->duration< T, U >();
+            }
+            
+            template< typename T, typename U >
+            std::chrono::duration< T, U > duration() const
+            {
+                std::chrono::nanoseconds ns( this->nanoseconds() );
+                
+                return std::chrono::duration_cast< std::chrono::duration< T, U > >( ns );
+            }
             
             friend void swap( Interval & o1, Interval & o2 );
             
