@@ -92,6 +92,13 @@ namespace Dispatch
             
             Interval & operator =( Interval o );
             
+            bool operator ==( const Interval & o );
+            bool operator !=( const Interval & o );
+            bool operator <(  const Interval & o );
+            bool operator >(  const Interval & o );
+            bool operator <=( const Interval & o );
+            bool operator >=( const Interval & o );
+            
             uint64_t value() const;
             Kind     kind()  const;
             

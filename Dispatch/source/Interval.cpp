@@ -148,6 +148,36 @@ namespace Dispatch
         return *( this );
     }
     
+    bool Interval::operator ==( const Interval & o )
+    {
+        return this->nanoseconds() == o.nanoseconds();
+    }
+    
+    bool Interval::operator !=( const Interval & o )
+    {
+        return this->nanoseconds() != o.nanoseconds();
+    }
+    
+    bool Interval::operator <( const Interval & o )
+    {
+        return this->nanoseconds() < o.nanoseconds();
+    }
+    
+    bool Interval::operator >( const Interval & o )
+    {
+        return this->nanoseconds() > o.nanoseconds();
+    }
+    
+    bool Interval::operator <=( const Interval & o )
+    {
+        return this->nanoseconds() <= o.nanoseconds();
+    }
+    
+    bool Interval::operator >=( const Interval & o )
+    {
+        return this->nanoseconds() >= o.nanoseconds();
+    }
+    
     uint64_t Interval::value() const
     {
         return this->impl->_value;
