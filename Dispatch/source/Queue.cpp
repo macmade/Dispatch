@@ -48,6 +48,7 @@ namespace Dispatch
             
             void _run();
             
+            UUID             _uuid;
             std::string      _label;
             Kind             _kind;
             Thread::Priority _priority;
@@ -126,6 +127,21 @@ namespace Dispatch
     
     Queue::~Queue()
     {}
+    
+    bool Queue::operator ==( const Queue & o ) const
+    {
+        return this->impl->_uuid == o.impl->_uuid;
+    }
+    
+    bool Queue::operator !=( const Queue & o ) const
+    {
+        return !operator ==( o );
+    }
+    
+    UUID Queue::uuid() const
+    {
+        return this->impl->_uuid;
+    }
     
     std::string Queue::label() const
     {

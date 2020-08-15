@@ -23,58 +23,40 @@
  ******************************************************************************/
 
 /*!
- * @header      Queue.hpp
+ * @header      UUID.hpp
  * @copyright   (c) 2020, Jean-David Gadina - www.xs-labs.com
  */
 
-#ifndef DISPATCH_QUEUE_HPP
-#define DISPATCH_QUEUE_HPP
+#ifndef DISPATCH_UUID_HPP
+#define DISPATCH_UUID_HPP
 
 #include <memory>
 #include <algorithm>
 #include <string>
-#include <Dispatch/Thread.hpp>
-#include <Dispatch/Action.hpp>
-#include <Dispatch/Interval.hpp>
-#include <Dispatch/Timer.hpp>
 
 namespace Dispatch
 {
-    class Queue
+    class UUID
     {
         public:
             
-            enum class Kind: int
-            {
-                Serial,
-                Concurrent
-            };
+            UUID();
+            UUID( const UUID & o );
+            UUID( UUID && o ) noexcept;
+            ~UUID();
             
-            static Queue & Global( Thread::Priority priority );
-            static Queue & Low();
-            static Queue & Normal();
-            static Queue & High();
+            UUID & operator =( UUID o );
             
-            Queue( const std::string & label, Kind kind, Thread::Priority priority = Thread::Priority::Normal );
-            ~Queue();
+            operator std::string() const;
             
-            Queue( const Queue & )              = delete;
-            Queue( Queue && )                   = delete;
-            Queue & operator =( const Queue & ) = delete;
-            Queue & operator =( Queue && )      = delete;
+            bool operator ==( const UUID & o ) const;
+            bool operator !=( const UUID & o ) const;
             
-            bool operator ==( const Queue & o ) const;
-            bool operator !=( const Queue & o ) const;
+            std::string string() const;
             
-            UUID             uuid()     const;
-            std::string      label()    const;
-            Kind             kind()     const;
-            Thread::Priority priority() const;
+            friend void swap( UUID & o1, UUID & o2 );
             
-            void sync(       const Action & action );
-            void async(      const Action & action );
-            void asyncAfter( const Action & action, const Interval & interval );
-            void schedule(   const Timer & timer );
+            friend std::ostream & operator << ( std::ostream & os, const UUID & o );
             
         private:
             
@@ -84,4 +66,4 @@ namespace Dispatch
     };
 }
 
-#endif /* DISPATCH_QUEUE_HPP */
+#endif /* DISPATCH_UUID_HPP */

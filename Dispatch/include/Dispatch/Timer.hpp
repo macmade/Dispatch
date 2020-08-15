@@ -32,6 +32,7 @@
 
 #include <memory>
 #include <algorithm>
+#include <Dispatch/UUID.hpp>
 
 namespace Dispatch
 {
@@ -45,6 +46,11 @@ namespace Dispatch
             ~Timer();
             
             Timer & operator =( Timer o );
+            
+            bool operator ==( const Timer & o ) const;
+            bool operator !=( const Timer & o ) const;
+            
+            UUID uuid() const;
             
             friend void swap( Timer & o1, Timer & o2 );
             

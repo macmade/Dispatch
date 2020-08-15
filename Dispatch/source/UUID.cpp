@@ -23,15 +23,19 @@
  ******************************************************************************/
 
 /*!
- * @file        Timer.cpp
+ * @file        UUID.cpp
  * @copyright   (c) 2020, Jean-David Gadina - www.xs-labs.com
  */
 
-#include <Dispatch/Timer.hpp>
+#include <Dispatch/UUID.hpp>
+
+#ifdef __APPLE__
+#include <uuid/uuid.h>
+#endif
 
 namespace Dispatch
 {
-    class Timer::IMPL
+    class UUID::IMPL
     {
         public:
             
@@ -39,60 +43,91 @@ namespace Dispatch
             IMPL( const IMPL & o );
             ~IMPL();
             
-            UUID _uuid;
+            std::string _uuid;
     };
     
-    Timer::Timer():
+    UUID::UUID():
         impl( std::make_unique< IMPL >() )
     {}
     
-    Timer::Timer( const Timer & o ):
-        impl( std::make_unique< IMPL >( *( o.impl ) ) )
+    
+    UUID::UUID( const UUID & o ):
+        impl( std::make_unique< IMPL >( *( o.impl.get() ) ) )
     {}
     
-    Timer::Timer( Timer && o ) noexcept:
+    UUID::UUID( UUID && o ) noexcept:
         impl( std::move( o.impl ) )
     {}
     
-    Timer::~Timer()
+    UUID::~UUID()
     {}
     
-    Timer & Timer::operator =( Timer o )
+    UUID & UUID::operator =( UUID o )
     {
         swap( *( this ), o );
         
         return *( this );
     }
     
-    bool Timer::operator ==( const Timer & o ) const
+    bool UUID::operator ==( const UUID & o ) const
     {
         return this->impl->_uuid == o.impl->_uuid;
     }
     
-    bool Timer::operator !=( const Timer & o ) const
+    bool UUID::operator !=( const UUID & o ) const
     {
         return !operator ==( o );
     }
     
-    UUID Timer::uuid() const
+    UUID::operator std::string () const
+    {
+        return this->string();
+    }
+    
+    std::string UUID::string() const
     {
         return this->impl->_uuid;
     }
     
-    void swap( Timer & o1, Timer & o2 )
+    void swap( UUID & o1, UUID & o2 )
     {
         using std::swap;
         
         swap( o1.impl, o2.impl );
     }
     
-    Timer::IMPL::IMPL()
-    {}
+    std::ostream & operator << ( std::ostream & os, const UUID & o )
+    {
+        os << o.string();
+        
+        return os;
+    }
     
-    Timer::IMPL::IMPL( const IMPL & o ):
+    #ifdef __APPLE__
+    
+    UUID::IMPL::IMPL()
+    {
+        uuid_t uuid;
+        char   s[ 37 ];
+        
+        uuid_generate_random( uuid );
+        memset( s, 0, sizeof( s ) );
+        uuid_unparse( uuid, s );
+        
+        this->_uuid = s;
+        
+        std::transform
+        (
+            this->_uuid.begin(),
+            this->_uuid.end(),
+            this->_uuid.begin(),
+            ::tolower
+        );
+    }
+    
+    #endif
+    
+    UUID::IMPL::IMPL( const IMPL & o ):
         _uuid( o._uuid )
-    {}
-    
-    Timer::IMPL::~IMPL()
     {}
 }

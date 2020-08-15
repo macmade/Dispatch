@@ -30,6 +30,7 @@
 #ifndef DISPATCH_HPP
 #define DISPATCH_HPP
 
+#include <Dispatch/UUID.hpp>
 #include <Dispatch/Thread.hpp>
 #include <Dispatch/Interval.hpp>
 #include <Dispatch/Action.hpp>
