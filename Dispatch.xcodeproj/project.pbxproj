@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		05FBE93424E7EDB70028EF06 /* Loop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05FBE93024E7EDB70028EF06 /* Loop.cpp */; };
+		05FBE93424E7EDB70028EF06 /* RunLoop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05FBE93024E7EDB70028EF06 /* RunLoop.cpp */; };
 		05FBE93524E7EDB70028EF06 /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05FBE93124E7EDB70028EF06 /* Timer.cpp */; };
 		05FBE93624E7EDB70028EF06 /* Action.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05FBE93224E7EDB70028EF06 /* Action.cpp */; };
 		05FBE93724E7EDB70028EF06 /* Queue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05FBE93324E7EDB70028EF06 /* Queue.cpp */; };
@@ -18,7 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		05FBE94324E7EE440028EF06 /* PBXContainerItemProxy */ = {
+		05FBE96B24E830C40028EF06 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 05FBE8D724E7EADB0028EF06 /* Project object */;
 			proxyType = 1;
@@ -90,8 +90,8 @@
 		05FBE92824E7ED2F0028EF06 /* Queue.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Queue.hpp; sourceTree = "<group>"; };
 		05FBE92924E7ED2F0028EF06 /* Action.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Action.hpp; sourceTree = "<group>"; };
 		05FBE92A24E7ED2F0028EF06 /* Timer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Timer.hpp; sourceTree = "<group>"; };
-		05FBE92B24E7ED2F0028EF06 /* Loop.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Loop.hpp; sourceTree = "<group>"; };
-		05FBE93024E7EDB70028EF06 /* Loop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Loop.cpp; sourceTree = "<group>"; };
+		05FBE92B24E7ED2F0028EF06 /* RunLoop.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RunLoop.hpp; sourceTree = "<group>"; };
+		05FBE93024E7EDB70028EF06 /* RunLoop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RunLoop.cpp; sourceTree = "<group>"; };
 		05FBE93124E7EDB70028EF06 /* Timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Timer.cpp; sourceTree = "<group>"; };
 		05FBE93224E7EDB70028EF06 /* Action.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Action.cpp; sourceTree = "<group>"; };
 		05FBE93324E7EDB70028EF06 /* Queue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Queue.cpp; sourceTree = "<group>"; };
@@ -157,8 +157,8 @@
 			children = (
 				05FBE93224E7EDB70028EF06 /* Action.cpp */,
 				05FBE94924E7F5160028EF06 /* Interval.cpp */,
-				05FBE93024E7EDB70028EF06 /* Loop.cpp */,
 				05FBE93324E7EDB70028EF06 /* Queue.cpp */,
+				05FBE93024E7EDB70028EF06 /* RunLoop.cpp */,
 				05FBE95D24E81E060028EF06 /* Thread.cpp */,
 				05FBE93124E7EDB70028EF06 /* Timer.cpp */,
 			);
@@ -179,8 +179,8 @@
 			children = (
 				05FBE92924E7ED2F0028EF06 /* Action.hpp */,
 				05FBE94724E7F5060028EF06 /* Interval.hpp */,
-				05FBE92B24E7ED2F0028EF06 /* Loop.hpp */,
 				05FBE92824E7ED2F0028EF06 /* Queue.hpp */,
+				05FBE92B24E7ED2F0028EF06 /* RunLoop.hpp */,
 				05FBE95B24E81DFA0028EF06 /* Thread.hpp */,
 				05FBE92A24E7ED2F0028EF06 /* Timer.hpp */,
 			);
@@ -359,7 +359,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				05FBE94424E7EE440028EF06 /* PBXTargetDependency */,
+				05FBE96C24E830C40028EF06 /* PBXTargetDependency */,
 			);
 			name = Test;
 			productName = Test;
@@ -411,7 +411,7 @@
 				05FBE94A24E7F5160028EF06 /* Interval.cpp in Sources */,
 				05FBE93624E7EDB70028EF06 /* Action.cpp in Sources */,
 				05FBE93724E7EDB70028EF06 /* Queue.cpp in Sources */,
-				05FBE93424E7EDB70028EF06 /* Loop.cpp in Sources */,
+				05FBE93424E7EDB70028EF06 /* RunLoop.cpp in Sources */,
 				05FBE95E24E81E060028EF06 /* Thread.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -427,10 +427,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		05FBE94424E7EE440028EF06 /* PBXTargetDependency */ = {
+		05FBE96C24E830C40028EF06 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 05FBE8DE24E7EADB0028EF06 /* Dispatch */;
-			targetProxy = 05FBE94324E7EE440028EF06 /* PBXContainerItemProxy */;
+			targetProxy = 05FBE96B24E830C40028EF06 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

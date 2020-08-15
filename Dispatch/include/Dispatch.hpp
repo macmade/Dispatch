@@ -34,7 +34,7 @@
 #include <Dispatch/Interval.hpp>
 #include <Dispatch/Action.hpp>
 #include <Dispatch/Timer.hpp>
-#include <Dispatch/Loop.hpp>
+#include <Dispatch/RunLoop.hpp>
 #include <Dispatch/Queue.hpp>
 
 #endif /* DISPATCH_HPP */

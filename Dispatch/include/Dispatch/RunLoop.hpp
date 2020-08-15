@@ -23,32 +23,39 @@
  ******************************************************************************/
 
 /*!
- * @header      Loop.hpp
+ * @header      RunLoop.hpp
  * @copyright   (c) 2020, Jean-David Gadina - www.xs-labs.com
  */
 
-#ifndef DISPATCH_LOOP_HPP
-#define DISPATCH_LOOP_HPP
+#ifndef DISPATCH_RUN_LOOP_HPP
+#define DISPATCH_RUN_LOOP_HPP
 
 #include <memory>
 #include <algorithm>
 
 namespace Dispatch
 {
-    class Loop
+    class RunLoop
     {
         public:
             
-            Loop();
-            ~Loop();
+            enum class RunStatus: int
+            {
+                DoneRunning,
+                AlreadyRunning
+            };
             
-            Loop( const Loop & )              = delete;
-            Loop( Loop && )                   = delete;
-            Loop & operator =( const Loop & ) = delete;
-            Loop & operator =( Loop && )      = delete;
+            RunLoop();
+            ~RunLoop();
             
-            void run();
-            void stop();
+            RunLoop( const RunLoop & )              = delete;
+            RunLoop( RunLoop && )                   = delete;
+            RunLoop & operator =( const RunLoop & ) = delete;
+            RunLoop & operator =( RunLoop && )      = delete;
+            
+            RunStatus run();
+            void      stop();
+            void      waitUntilStopped();
             
         private:
             
@@ -58,4 +65,4 @@ namespace Dispatch
     };
 }
 
-#endif /* DISPATCH_LOOP_HPP */
+#endif /* DISPATCH_RUN_LOOP_HPP */

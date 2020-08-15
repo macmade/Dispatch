@@ -28,7 +28,7 @@
  */
 
 #include <Dispatch/Queue.hpp>
-#include <Dispatch/Loop.hpp>
+#include <Dispatch/RunLoop.hpp>
 #include <thread>
 #include <mutex>
 #include <map>
@@ -51,7 +51,7 @@ namespace Dispatch
             std::string      _label;
             Kind             _kind;
             Thread::Priority _priority;
-            Loop             _loop;
+            RunLoop          _rl;
     };
     
     Queue & Queue::Global( Thread::Priority priority )
@@ -180,7 +180,7 @@ namespace Dispatch
     
     Queue::IMPL::~IMPL()
     {
-        this->_loop.stop();
+        this->_rl.stop();
     }
     
     void Queue::IMPL::_run()
@@ -188,6 +188,6 @@ namespace Dispatch
         Thread::SetName(     this->_label );
         Thread::SetPriority( this->_priority );
         
-        this->_loop.run();
+        this->_rl.run();
     }
 }

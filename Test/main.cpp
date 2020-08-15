@@ -28,10 +28,14 @@
  */
 
 #include <Dispatch.hpp>
+#include <thread>
 
 int main()
 {
     Dispatch::Queue::Normal();
+    
+    volatile int x = 0;
+    while( x == 0 );
     
     return 0;
 }
