@@ -23,17 +23,37 @@
  ******************************************************************************/
 
 /*!
- * @header      Dispatch.hpp
+ * @header      Interval.hpp
  * @copyright   (c) 2020, Jean-David Gadina - www.xs-labs.com
  */
 
-#ifndef DISPATCH_HPP
-#define DISPATCH_HPP
+#ifndef DISPATCH_INTERVAL_HPP
+#define DISPATCH_INTERVAL_HPP
 
-#include <Dispatch/Interval.hpp>
-#include <Dispatch/Action.hpp>
-#include <Dispatch/Timer.hpp>
-#include <Dispatch/Loop.hpp>
-#include <Dispatch/Queue.hpp>
+#include <memory>
+#include <algorithm>
 
-#endif /* DISPATCH_HPP */
+namespace Dispatch
+{
+    class Interval
+    {
+        public:
+            
+            Interval();
+            Interval( const Interval & o );
+            Interval( Interval && o ) noexcept;
+            ~Interval();
+            
+            Interval & operator =( Interval o );
+            
+            friend void swap( Interval & o1, Interval & o2 );
+            
+        private:
+            
+            class IMPL;
+            
+            std::unique_ptr< IMPL > impl;
+    };
+}
+
+#endif /* DISPATCH_INTERVAL_HPP */

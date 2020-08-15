@@ -7,17 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		05FBE92724E7ECDF0028EF06 /* Dispatch.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 05FBE92624E7ECDF0028EF06 /* Dispatch.hpp */; };
-		05FBE92C24E7ED2F0028EF06 /* Queue.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 05FBE92824E7ED2F0028EF06 /* Queue.hpp */; };
-		05FBE92D24E7ED2F0028EF06 /* Action.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 05FBE92924E7ED2F0028EF06 /* Action.hpp */; };
-		05FBE92E24E7ED2F0028EF06 /* Timer.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 05FBE92A24E7ED2F0028EF06 /* Timer.hpp */; };
-		05FBE92F24E7ED2F0028EF06 /* Loop.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 05FBE92B24E7ED2F0028EF06 /* Loop.hpp */; };
 		05FBE93424E7EDB70028EF06 /* Loop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05FBE93024E7EDB70028EF06 /* Loop.cpp */; };
 		05FBE93524E7EDB70028EF06 /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05FBE93124E7EDB70028EF06 /* Timer.cpp */; };
 		05FBE93624E7EDB70028EF06 /* Action.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05FBE93224E7EDB70028EF06 /* Action.cpp */; };
 		05FBE93724E7EDB70028EF06 /* Queue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05FBE93324E7EDB70028EF06 /* Queue.cpp */; };
 		05FBE93F24E7EE010028EF06 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05FBE93E24E7EE010028EF06 /* main.cpp */; };
 		05FBE94624E7EE470028EF06 /* libDispatch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 05FBE8DF24E7EADB0028EF06 /* libDispatch.a */; };
+		05FBE94A24E7F5160028EF06 /* Interval.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05FBE94924E7F5160028EF06 /* Interval.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -100,6 +96,8 @@
 		05FBE93324E7EDB70028EF06 /* Queue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Queue.cpp; sourceTree = "<group>"; };
 		05FBE93C24E7EE010028EF06 /* Test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Test; sourceTree = BUILT_PRODUCTS_DIR; };
 		05FBE93E24E7EE010028EF06 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		05FBE94724E7F5060028EF06 /* Interval.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Interval.hpp; sourceTree = "<group>"; };
+		05FBE94924E7F5160028EF06 /* Interval.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Interval.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +153,7 @@
 			isa = PBXGroup;
 			children = (
 				05FBE93224E7EDB70028EF06 /* Action.cpp */,
+				05FBE94924E7F5160028EF06 /* Interval.cpp */,
 				05FBE93024E7EDB70028EF06 /* Loop.cpp */,
 				05FBE93324E7EDB70028EF06 /* Queue.cpp */,
 				05FBE93124E7EDB70028EF06 /* Timer.cpp */,
@@ -175,6 +174,7 @@
 			isa = PBXGroup;
 			children = (
 				05FBE92924E7ED2F0028EF06 /* Action.hpp */,
+				05FBE94724E7F5060028EF06 /* Interval.hpp */,
 				05FBE92B24E7ED2F0028EF06 /* Loop.hpp */,
 				05FBE92824E7ED2F0028EF06 /* Queue.hpp */,
 				05FBE92A24E7ED2F0028EF06 /* Timer.hpp */,
@@ -320,10 +320,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				05FBE92F24E7ED2F0028EF06 /* Loop.hpp in Headers */,
-				05FBE92E24E7ED2F0028EF06 /* Timer.hpp in Headers */,
-				05FBE92D24E7ED2F0028EF06 /* Action.hpp in Headers */,
-				05FBE92C24E7ED2F0028EF06 /* Queue.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -407,8 +403,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				05FBE93524E7EDB70028EF06 /* Timer.cpp in Sources */,
+				05FBE94A24E7F5160028EF06 /* Interval.cpp in Sources */,
 				05FBE93624E7EDB70028EF06 /* Action.cpp in Sources */,
-				05FBE92724E7ECDF0028EF06 /* Dispatch.hpp in Sources */,
 				05FBE93724E7EDB70028EF06 /* Queue.cpp in Sources */,
 				05FBE93424E7EDB70028EF06 /* Loop.cpp in Sources */,
 			);

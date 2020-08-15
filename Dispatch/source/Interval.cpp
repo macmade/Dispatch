@@ -23,104 +23,60 @@
  ******************************************************************************/
 
 /*!
- * @file        Queue.cpp
+ * @file        Interval.cpp
  * @copyright   (c) 2020, Jean-David Gadina - www.xs-labs.com
  */
 
-#include <Dispatch/Queue.hpp>
+#include <Dispatch/Interval.hpp>
 
 namespace Dispatch
 {
-    class Queue::IMPL
+    class Interval::IMPL
     {
         public:
             
-            IMPL( const std::string & label, Kind kind, Priority priority );
+            IMPL();
             IMPL( const IMPL & o );
             ~IMPL();
-            
-            std::string _label;
-            Kind        _kind;
-            Priority    _priority;
     };
     
-    Queue::Queue( const std::string & label, Kind kind, Priority priority ):
-        impl( std::make_unique< IMPL >( label, kind, priority ) )
+    Interval::Interval():
+        impl( std::make_unique< IMPL >() )
     {}
     
-    Queue::Queue( const Queue & o ):
+    Interval::Interval( const Interval & o ):
         impl( std::make_unique< IMPL >( *( o.impl ) ) )
     {}
     
-    Queue::Queue( Queue && o ) noexcept:
+    Interval::Interval( Interval && o ) noexcept:
         impl( std::move( o.impl ) )
     {}
     
-    Queue::~Queue()
+    Interval::~Interval()
     {}
     
-    Queue & Queue::operator =( Queue o )
+    Interval & Interval::operator =( Interval o )
     {
         swap( *( this ), o );
         
         return *( this );
     }
     
-    std::string Queue::label() const
-    {
-        return this->impl->_label;
-    }
-    
-    Queue::Kind Queue::kind() const
-    {
-        return this->impl->_kind;
-    }
-    
-    Queue::Priority Queue::priority() const
-    {
-        return this->impl->_priority;
-    }
-    
-    void Queue::sync( const Action & action )
-    {
-        ( void )action;
-    }
-    
-    void Queue::async( const Action & action )
-    {
-        ( void )action;
-    }
-    
-    void Queue::asyncAfter( const Action & action, const Interval & interval )
-    {
-        ( void )action;
-        ( void )interval;
-    }
-    
-    void Queue::schedule( const Timer & timer )
-    {
-        ( void )timer;
-    }
-    
-    void swap( Queue & o1, Queue & o2 )
+    void swap( Interval & o1, Interval & o2 )
     {
         using std::swap;
         
         swap( o1.impl, o2.impl );
     }
     
-    Queue::IMPL::IMPL( const std::string & label, Kind kind, Priority priority ):
-        _label(    label ),
-        _kind(     kind ),
-        _priority( priority )
+    Interval::IMPL::IMPL()
     {}
     
-    Queue::IMPL::IMPL( const IMPL & o ):
-        _label(    o._label ),
-        _kind(     o._kind ),
-        _priority( o._priority )
-    {}
+    Interval::IMPL::IMPL( const IMPL & o )
+    {
+        ( void )o;
+    }
     
-    Queue::IMPL::~IMPL()
+    Interval::IMPL::~IMPL()
     {}
 }

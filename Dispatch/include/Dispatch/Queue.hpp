@@ -33,6 +33,9 @@
 #include <memory>
 #include <algorithm>
 #include <string>
+#include <Dispatch/Action.hpp>
+#include <Dispatch/Interval.hpp>
+#include <Dispatch/Timer.hpp>
 
 namespace Dispatch
 {
@@ -46,15 +49,28 @@ namespace Dispatch
                 Concurrent
             };
             
-            Queue( const std::string & label, Kind kind );
+            enum class Priority: int
+            {
+                Low,
+                Normal,
+                High
+            };
+            
+            Queue( const std::string & label, Kind kind, Priority priority = Priority::Normal );
             Queue( const Queue & o );
             Queue( Queue && o ) noexcept;
             ~Queue();
             
             Queue & operator =( Queue o );
             
-            std::string label() const;
-            Kind        kind()  const;
+            std::string label()    const;
+            Kind        kind()     const;
+            Priority    priority() const;
+            
+            void sync(       const Action & action );
+            void async(      const Action & action );
+            void asyncAfter( const Action & action, const Interval & interval );
+            void schedule(   const Timer & timer );
             
             friend void swap( Queue & o1, Queue & o2 );
             
