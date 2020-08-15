@@ -23,18 +23,38 @@
  ******************************************************************************/
 
 /*!
- * @header      Dispatch.hpp
+ * @header      Thread.hpp
  * @copyright   (c) 2020, Jean-David Gadina - www.xs-labs.com
  */
 
-#ifndef DISPATCH_HPP
-#define DISPATCH_HPP
+#ifndef DISPATCH_THREAD_HPP
+#define DISPATCH_THREAD_HPP
 
-#include <Dispatch/Thread.hpp>
-#include <Dispatch/Interval.hpp>
-#include <Dispatch/Action.hpp>
-#include <Dispatch/Timer.hpp>
-#include <Dispatch/Loop.hpp>
-#include <Dispatch/Queue.hpp>
+#include <string>
 
-#endif /* DISPATCH_HPP */
+namespace Dispatch
+{
+    class Thread
+    {
+        public:
+            
+            enum class Priority: int
+            {
+                Low,
+                Normal,
+                High
+            };
+            
+            static void SetPriority( Priority priority );
+            static void SetName( const std::string & name );
+            
+            Thread()                              = delete;
+            Thread( const Thread & )              = delete;
+            Thread( Thread && )                   = delete;
+            ~Thread()                             = delete;
+            Thread & operator =( const Thread & ) = delete;
+            Thread & operator =( Thread && )      = delete;
+    };
+}
+
+#endif /* DISPATCH_THREAD_HPP */

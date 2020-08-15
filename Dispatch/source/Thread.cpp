@@ -23,18 +23,49 @@
  ******************************************************************************/
 
 /*!
- * @header      Dispatch.hpp
+ * @file        Thread.cpp
  * @copyright   (c) 2020, Jean-David Gadina - www.xs-labs.com
  */
 
-#ifndef DISPATCH_HPP
-#define DISPATCH_HPP
-
 #include <Dispatch/Thread.hpp>
-#include <Dispatch/Interval.hpp>
-#include <Dispatch/Action.hpp>
-#include <Dispatch/Timer.hpp>
-#include <Dispatch/Loop.hpp>
-#include <Dispatch/Queue.hpp>
 
-#endif /* DISPATCH_HPP */
+#ifdef __APPLE__
+#include <pthread.h>
+#include <string.h>
+#endif
+
+namespace Dispatch
+{
+    void Thread::SetPriority( Priority priority )
+    {
+        #ifdef __APPLE__
+        
+        struct sched_param sp;
+        
+        memset( &sp, 0, sizeof( struct sched_param ) );
+        
+        if( priority == Priority::Low )
+        {
+            sp.sched_priority = sched_get_priority_min( SCHED_RR );
+            
+            pthread_setschedparam( pthread_self(), SCHED_RR, &sp );
+        }
+        else if( priority == Priority::Normal )
+        {
+            sp.sched_priority = sched_get_priority_min( SCHED_RR );
+            
+            pthread_setschedparam( pthread_self(), SCHED_RR, &sp );
+        }
+        
+        #endif
+    }
+    
+    void Thread::SetName( const std::string & name )
+    {
+        #ifdef __APPLE__
+        
+        pthread_setname_np( name.c_str() );
+        
+        #endif
+    }
+}

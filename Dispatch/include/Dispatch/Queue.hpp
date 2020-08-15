@@ -33,6 +33,7 @@
 #include <memory>
 #include <algorithm>
 #include <string>
+#include <Dispatch/Thread.hpp>
 #include <Dispatch/Action.hpp>
 #include <Dispatch/Interval.hpp>
 #include <Dispatch/Timer.hpp>
@@ -49,29 +50,22 @@ namespace Dispatch
                 Concurrent
             };
             
-            enum class Priority: int
-            {
-                Low,
-                Normal,
-                High
-            };
-            
-            static Queue & Global( Priority priority );
+            static Queue & Global( Thread::Priority priority );
             static Queue & Low();
             static Queue & Normal();
             static Queue & High();
             
-            Queue( const std::string & label, Kind kind, Priority priority = Priority::Normal );
+            Queue( const std::string & label, Kind kind, Thread::Priority priority = Thread::Priority::Normal );
             ~Queue();
             
-            Queue( const Queue & o )              = delete;
-            Queue( Queue && o )                   = delete;
-            Queue & operator =( const Queue & o ) = delete;
-            Queue & operator =( Queue && o )      = delete;
+            Queue( const Queue & )              = delete;
+            Queue( Queue && )                   = delete;
+            Queue & operator =( const Queue & ) = delete;
+            Queue & operator =( Queue && )      = delete;
             
-            std::string label()    const;
-            Kind        kind()     const;
-            Priority    priority() const;
+            std::string      label()    const;
+            Kind             kind()     const;
+            Thread::Priority priority() const;
             
             void sync(       const Action & action );
             void async(      const Action & action );

@@ -37,28 +37,24 @@
 #include <array>
 #include <condition_variable>
 
-#ifdef __APPLE__
-#include <pthread.h>
-#endif
-
 namespace Dispatch
 {
     class Queue::IMPL
     {
         public:
             
-            IMPL( const std::string & label, Kind kind, Priority priority );
+            IMPL( const std::string & label, Kind kind, Thread::Priority priority );
             ~IMPL();
             
             void _run();
             
-            std::string _label;
-            Kind        _kind;
-            Priority    _priority;
-            Loop        _loop;
+            std::string      _label;
+            Kind             _kind;
+            Thread::Priority _priority;
+            Loop             _loop;
     };
     
-    Queue & Queue::Global( Priority priority )
+    Queue & Queue::Global( Thread::Priority priority )
     {
         static std::once_flag                              once;
         static std::array< std::unique_ptr< Queue >, 3 > * queues;
@@ -70,21 +66,38 @@ namespace Dispatch
             {
                 queues = new std::remove_pointer< decltype( queues ) >::type();
                 
-                queues->at( 0 ) = std::make_unique< Queue >( "com.xs-labs.Dispatch.Queue.Global.Low",    Kind::Concurrent, Priority::Low );
-                queues->at( 1 ) = std::make_unique< Queue >( "com.xs-labs.Dispatch.Queue.Global.Normal", Kind::Concurrent, Priority::Normal );
-                queues->at( 2 ) = std::make_unique< Queue >( "com.xs-labs.Dispatch.Queue.Global.High",   Kind::Concurrent, Priority::High );
+                queues->at( 0 ) = std::make_unique< Queue >
+                (
+                    "com.xs-labs.Dispatch.Queue.Global.Low",
+                    Kind::Concurrent,
+                    Thread::Priority::Low
+                );
+                
+                queues->at( 1 ) = std::make_unique< Queue >
+                (
+                    "com.xs-labs.Dispatch.Queue.Global.Normal",
+                    Kind::Concurrent,
+                    Thread::Priority::Normal
+                );
+                
+                queues->at( 2 ) = std::make_unique< Queue >
+                (
+                    "com.xs-labs.Dispatch.Queue.Global.High",
+                    Kind::Concurrent,
+                    Thread::Priority::High
+                );
             }
         );
         
-        if( priority == Priority::Low )
+        if( priority == Thread::Priority::Low )
         {
             return *( queues->at( 0 ) );
         }
-        else if( priority == Priority::Normal )
+        else if( priority == Thread::Priority::Normal )
         {
             return *( queues->at( 1 ) );
         }
-        else if( priority == Priority::High )
+        else if( priority == Thread::Priority::High )
         {
             return *( queues->at( 2 ) );
         }
@@ -94,20 +107,20 @@ namespace Dispatch
     
     Queue & Queue::Low()
     {
-        return Global( Priority::Low );
+        return Global( Thread::Priority::Low );
     }
     
     Queue & Queue::Normal()
     {
-        return Global( Priority::Normal );
+        return Global( Thread::Priority::Normal );
     }
     
     Queue & Queue::High()
     {
-        return Global( Priority::High );
+        return Global( Thread::Priority::High );
     }
     
-    Queue::Queue( const std::string & label, Kind kind, Priority priority ):
+    Queue::Queue( const std::string & label, Kind kind, Thread::Priority priority ):
         impl( std::make_unique< IMPL >( label, kind, priority ) )
     {}
     
@@ -124,7 +137,7 @@ namespace Dispatch
         return this->impl->_kind;
     }
     
-    Queue::Priority Queue::priority() const
+    Thread::Priority Queue::priority() const
     {
         return this->impl->_priority;
     }
@@ -150,7 +163,7 @@ namespace Dispatch
         ( void )timer;
     }
     
-    Queue::IMPL::IMPL( const std::string & label, Kind kind, Priority priority ):
+    Queue::IMPL::IMPL( const std::string & label, Kind kind, Thread::Priority priority ):
         _label(    label ),
         _kind(     kind ),
         _priority( priority )
@@ -170,32 +183,8 @@ namespace Dispatch
     
     void Queue::IMPL::_run()
     {
-        #ifdef __APPLE__
-        
-        pthread_setname_np( this->_label.c_str() );
-        
-        if( this->_priority == Priority::Low )
-        {
-            struct sched_param sp;
-            
-            memset( &sp, 0, sizeof( struct sched_param ) );
-            
-            sp.sched_priority = sched_get_priority_min( SCHED_RR );
-            
-            pthread_setschedparam( pthread_self(), SCHED_RR, &sp );
-        }
-        else if( this->_priority == Priority::Normal )
-        {
-            struct sched_param sp;
-            
-            memset( &sp, 0, sizeof( struct sched_param ) );
-            
-            sp.sched_priority = sched_get_priority_min( SCHED_RR );
-            
-            pthread_setschedparam( pthread_self(), SCHED_RR, &sp );
-        }
-        
-        #endif
+        Thread::SetName(     this->_label );
+        Thread::SetPriority( this->_priority );
         
         this->_loop.run();
     }

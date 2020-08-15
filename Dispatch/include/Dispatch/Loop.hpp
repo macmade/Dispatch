@@ -42,10 +42,10 @@ namespace Dispatch
             Loop();
             ~Loop();
             
-            Loop( const Loop & o )              = delete;
-            Loop( Loop && o )                   = delete;
-            Loop & operator =( const Loop & o ) = delete;
-            Loop & operator =( Loop && o )      = delete;
+            Loop( const Loop & )              = delete;
+            Loop( Loop && )                   = delete;
+            Loop & operator =( const Loop & ) = delete;
+            Loop & operator =( Loop && )      = delete;
             
             void run();
             

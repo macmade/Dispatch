@@ -14,6 +14,7 @@
 		05FBE93F24E7EE010028EF06 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05FBE93E24E7EE010028EF06 /* main.cpp */; };
 		05FBE94624E7EE470028EF06 /* libDispatch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 05FBE8DF24E7EADB0028EF06 /* libDispatch.a */; };
 		05FBE94A24E7F5160028EF06 /* Interval.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05FBE94924E7F5160028EF06 /* Interval.cpp */; };
+		05FBE95E24E81E060028EF06 /* Thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05FBE95D24E81E060028EF06 /* Thread.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,6 +99,8 @@
 		05FBE93E24E7EE010028EF06 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		05FBE94724E7F5060028EF06 /* Interval.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Interval.hpp; sourceTree = "<group>"; };
 		05FBE94924E7F5160028EF06 /* Interval.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Interval.cpp; sourceTree = "<group>"; };
+		05FBE95B24E81DFA0028EF06 /* Thread.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Thread.hpp; sourceTree = "<group>"; };
+		05FBE95D24E81E060028EF06 /* Thread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Thread.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +159,7 @@
 				05FBE94924E7F5160028EF06 /* Interval.cpp */,
 				05FBE93024E7EDB70028EF06 /* Loop.cpp */,
 				05FBE93324E7EDB70028EF06 /* Queue.cpp */,
+				05FBE95D24E81E060028EF06 /* Thread.cpp */,
 				05FBE93124E7EDB70028EF06 /* Timer.cpp */,
 			);
 			path = source;
@@ -177,6 +181,7 @@
 				05FBE94724E7F5060028EF06 /* Interval.hpp */,
 				05FBE92B24E7ED2F0028EF06 /* Loop.hpp */,
 				05FBE92824E7ED2F0028EF06 /* Queue.hpp */,
+				05FBE95B24E81DFA0028EF06 /* Thread.hpp */,
 				05FBE92A24E7ED2F0028EF06 /* Timer.hpp */,
 			);
 			path = Dispatch;
@@ -407,6 +412,7 @@
 				05FBE93624E7EDB70028EF06 /* Action.cpp in Sources */,
 				05FBE93724E7EDB70028EF06 /* Queue.cpp in Sources */,
 				05FBE93424E7EDB70028EF06 /* Loop.cpp in Sources */,
+				05FBE95E24E81E060028EF06 /* Thread.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
