@@ -90,20 +90,12 @@ namespace Dispatch
             }
         );
         
-        if( priority == Thread::Priority::Low )
+        switch( priority )
         {
-            return *( queues->at( 0 ) );
+            case Thread::Priority::Low:    return *( queues->at( 0 ) );
+            case Thread::Priority::Normal: return *( queues->at( 1 ) );
+            case Thread::Priority::High:   return *( queues->at( 2 ) );
         }
-        else if( priority == Thread::Priority::Normal )
-        {
-            return *( queues->at( 1 ) );
-        }
-        else if( priority == Thread::Priority::High )
-        {
-            return *( queues->at( 2 ) );
-        }
-        
-        throw std::runtime_error( "Invalid Global Dispatch Queue Priority" );
     }
     
     Queue & Queue::Low()

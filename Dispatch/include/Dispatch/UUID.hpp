@@ -41,6 +41,7 @@ namespace Dispatch
         public:
             
             UUID();
+            UUID( const std::string & s ) noexcept( false );
             UUID( const UUID & o );
             UUID( UUID && o ) noexcept;
             ~UUID();

@@ -29,6 +29,7 @@
 
 #include <Dispatch/UUID.hpp>
 #include <iostream>
+#include <regex>
 
 #ifdef __APPLE__
 #include <uuid/uuid.h>
@@ -41,6 +42,7 @@ namespace Dispatch
         public:
             
             IMPL();
+            IMPL( const std::string & s ) noexcept( false );
             IMPL( const IMPL & o );
             ~IMPL();
             
@@ -51,6 +53,9 @@ namespace Dispatch
         impl( std::make_unique< IMPL >() )
     {}
     
+    UUID::UUID( const std::string & s ) noexcept( false ):
+        impl( std::make_unique< IMPL >( s ) )
+    {}
     
     UUID::UUID( const UUID & o ):
         impl( std::make_unique< IMPL >( *( o.impl.get() ) ) )
@@ -127,6 +132,26 @@ namespace Dispatch
     }
     
     #endif
+    
+    UUID::IMPL::IMPL( const std::string & s ) noexcept( false )
+    {
+        std::regex e( "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", std::regex_constants::icase );
+        
+        if( std::regex_search( s, e ) == false )
+        {
+            throw std::runtime_error( "Invalid UUID string" );
+        }
+        
+        this->_uuid = s;
+        
+        std::transform
+        (
+            this->_uuid.begin(),
+            this->_uuid.end(),
+            this->_uuid.begin(),
+            ::tolower
+        );
+    }
     
     UUID::IMPL::IMPL( const IMPL & o ):
         _uuid( o._uuid )
