@@ -313,6 +313,42 @@ XSTest( Interval, OperatorAssign )
     XSTestAssertEqual( i4.value(), 2ULL );
 }
 
+XSTest( Interval, OperatorEqual )
+{
+    Dispatch::Interval i1( 42000, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i2( 42001, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i3( 42,    Dispatch::Interval::Kind::Microseconds );
+    
+    XSTestAssertTrue(  i1 == i1 );
+    XSTestAssertTrue(  i1 == i3 );
+    XSTestAssertFalse( i1 == i2 );
+    XSTestAssertFalse( i2 == i3 );
+}
+
+XSTest( Interval, OperatorNotEqual )
+{
+    Dispatch::Interval i1( 42000, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i2( 42001, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i3( 42,    Dispatch::Interval::Kind::Microseconds );
+    
+    XSTestAssertFalse( i1 != i1 );
+    XSTestAssertFalse( i1 != i3 );
+    XSTestAssertTrue(  i1 != i2 );
+    XSTestAssertTrue(  i2 != i3 );
+}
+
+XSTest( Interval, OperatorLesser )
+{}
+
+XSTest( Interval, OperatorGreater )
+{}
+
+XSTest( Interval, OperatorLesserOrEqual )
+{}
+
+XSTest( Interval, OperatorGreaterOrEqual )
+{}
+
 XSTest( Interval, Value )
 {
     Dispatch::Interval i1(  0, Dispatch::Interval::Kind::Seconds );
