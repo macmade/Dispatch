@@ -32,6 +32,7 @@
 
 #include <memory>
 #include <algorithm>
+#include <cstdint>
 
 namespace Dispatch
 {
@@ -39,12 +40,30 @@ namespace Dispatch
     {
         public:
             
-            Interval();
+            enum class Kind: int
+            {
+                Milliseconds,
+                Seconds,
+                Minutes,
+                Hours,
+                Days
+            };
+            
+            static Interval FromMilliseconds( uint64_t value );
+            static Interval FromSeconds(      uint64_t value );
+            static Interval FromMinutes(      uint64_t value );
+            static Interval FromHours(        uint64_t value );
+            static Interval FromDays(         uint64_t value );
+            
+            Interval( uint64_t value, Kind kind );
             Interval( const Interval & o );
             Interval( Interval && o ) noexcept;
             ~Interval();
             
             Interval & operator =( Interval o );
+            
+            uint64_t value() const;
+            Kind     kind()  const;
             
             friend void swap( Interval & o1, Interval & o2 );
             

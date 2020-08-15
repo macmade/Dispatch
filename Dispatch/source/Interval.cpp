@@ -35,13 +35,41 @@ namespace Dispatch
     {
         public:
             
-            IMPL();
+            IMPL( uint64_t value, Kind kind );
             IMPL( const IMPL & o );
             ~IMPL();
+            
+            uint64_t _value;
+            Kind     _kind;
     };
     
-    Interval::Interval():
-        impl( std::make_unique< IMPL >() )
+    Interval Interval::FromMilliseconds( uint64_t value )
+    {
+        return { value, Kind::Milliseconds };
+    }
+    
+    Interval Interval::FromSeconds( uint64_t value )
+    {
+        return { value, Kind::Seconds };
+    }
+    
+    Interval Interval::FromMinutes( uint64_t value )
+    {
+        return { value, Kind::Minutes };
+    }
+    
+    Interval Interval::FromHours( uint64_t value )
+    {
+        return { value, Kind::Hours };
+    }
+    
+    Interval Interval::FromDays( uint64_t value )
+    {
+        return { value, Kind::Days };
+    }
+    
+    Interval::Interval( uint64_t value, Kind kind ):
+        impl( std::make_unique< IMPL >( value, kind ) )
     {}
     
     Interval::Interval( const Interval & o ):
@@ -62,6 +90,16 @@ namespace Dispatch
         return *( this );
     }
     
+    uint64_t Interval::value() const
+    {
+        return this->impl->_value;
+    }
+    
+    Interval::Kind Interval::kind() const
+    {
+        return this->impl->_kind;
+    }
+    
     void swap( Interval & o1, Interval & o2 )
     {
         using std::swap;
@@ -69,13 +107,15 @@ namespace Dispatch
         swap( o1.impl, o2.impl );
     }
     
-    Interval::IMPL::IMPL()
+    Interval::IMPL::IMPL( uint64_t value, Kind kind ):
+        _value( value ),
+        _kind(  kind )
     {}
     
-    Interval::IMPL::IMPL( const IMPL & o )
-    {
-        ( void )o;
-    }
+    Interval::IMPL::IMPL( const IMPL & o ):
+        _value( o._value ),
+        _kind(  o._kind )
+    {}
     
     Interval::IMPL::~IMPL()
     {}
