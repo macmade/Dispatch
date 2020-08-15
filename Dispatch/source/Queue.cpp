@@ -179,7 +179,9 @@ namespace Dispatch
     }
     
     Queue::IMPL::~IMPL()
-    {}
+    {
+        this->_loop.stop();
+    }
     
     void Queue::IMPL::_run()
     {

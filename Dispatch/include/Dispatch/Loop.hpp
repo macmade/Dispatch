@@ -48,6 +48,7 @@ namespace Dispatch
             Loop & operator =( Loop && )      = delete;
             
             void run();
+            void stop();
             
         private:
             

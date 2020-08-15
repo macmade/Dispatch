@@ -49,6 +49,9 @@ namespace Dispatch
     void Loop::run()
     {}
     
+    void Loop::stop()
+    {}
+    
     Loop::IMPL::IMPL()
     {}
     
