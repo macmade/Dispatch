@@ -269,17 +269,168 @@ XSTest( Timer, Action )
 
 XSTest( Timer, ShouldRun )
 {
+    {
+        Dispatch::Timer t1( { 0, Dispatch::Interval::Kind::Nanoseconds }, Dispatch::Timer::Kind::Repeating, []() {} );
+        Dispatch::Timer t2( { 0, Dispatch::Interval::Kind::Nanoseconds }, Dispatch::Timer::Kind::Transient, []() {} );
+        
+        XSTestAssertTrue( t1.shouldRun() );
+        XSTestAssertTrue( t2.shouldRun() );
+        
+        t1.run();
+        t2.run();
+        
+        XSTestAssertTrue(  t1.shouldRun() );
+        XSTestAssertFalse( t2.shouldRun() );
+    }
     
+    {
+        Dispatch::Timer t1( { 1, Dispatch::Interval::Kind::Seconds }, Dispatch::Timer::Kind::Repeating, { 0, Dispatch::Interval::Kind::Seconds      }, []() {} );
+        Dispatch::Timer t2( { 1, Dispatch::Interval::Kind::Seconds }, Dispatch::Timer::Kind::Repeating, { 1, Dispatch::Interval::Kind::Milliseconds }, []() {} );
+        
+        XSTestAssertTrue(  t1.shouldRun() );
+        XSTestAssertFalse( t2.shouldRun() );
+        
+        t1.run();
+        
+        XSTestAssertFalse( t1.shouldRun() );
+        
+        Dispatch::Thread::Sleep( { 1, Dispatch::Interval::Kind::Milliseconds } );
+        
+        XSTestAssertTrue( t2.shouldRun() );
+        
+        t2.run();
+        
+        XSTestAssertFalse( t2.shouldRun() );
+    }
 }
 
 XSTest( Timer, Run )
 {
+    {
+        int             x( 0 );
+        int             y( 0 );
+        Dispatch::Timer t1( { 0, Dispatch::Interval::Kind::Nanoseconds }, Dispatch::Timer::Kind::Repeating, [ & ]() { x++; } );
+        Dispatch::Timer t2( { 0, Dispatch::Interval::Kind::Nanoseconds }, Dispatch::Timer::Kind::Transient, [ & ]() { y++; } );
+        
+        XSTestAssertTrue( t1.shouldRun() );
+        XSTestAssertTrue( t2.shouldRun() );
+        XSTestAssertEqual( x, 0 );
+        XSTestAssertEqual( y, 0 );
+        
+        t1.run();
+        t2.run();
+        
+        XSTestAssertTrue(  t1.shouldRun() );
+        XSTestAssertFalse( t2.shouldRun() );
+        XSTestAssertEqual( x, 1 );
+        XSTestAssertEqual( y, 1 );
+        
+        t1.run();
+        t2.run();
+        
+        XSTestAssertEqual( x, 2 );
+        XSTestAssertEqual( y, 2 );
+    }
     
+    {
+        int             x( 0 );
+        int             y( 0 );
+        Dispatch::Timer t1( { 1, Dispatch::Interval::Kind::Seconds }, Dispatch::Timer::Kind::Repeating, { 0, Dispatch::Interval::Kind::Seconds      }, [ & ]() { x++; } );
+        Dispatch::Timer t2( { 1, Dispatch::Interval::Kind::Seconds }, Dispatch::Timer::Kind::Repeating, { 1, Dispatch::Interval::Kind::Milliseconds }, [ & ]() { y++; } );
+        
+        XSTestAssertTrue(  t1.shouldRun() );
+        XSTestAssertFalse( t2.shouldRun() );
+        XSTestAssertEqual( x, 0 );
+        XSTestAssertEqual( y, 0 );
+        
+        t1.run();
+        t2.run();
+        
+        XSTestAssertFalse( t1.shouldRun() );
+        XSTestAssertFalse( t2.shouldRun() );
+        XSTestAssertEqual( x, 1 );
+        XSTestAssertEqual( y, 1 );
+        
+        t1.run();
+        t2.run();
+        
+        XSTestAssertFalse( t1.shouldRun() );
+        XSTestAssertFalse( t2.shouldRun() );
+        XSTestAssertEqual( x, 2 );
+        XSTestAssertEqual( y, 2 );
+    }
 }
 
 XSTest( Timer, RunIfNecessary )
 {
+    {
+        int             x( 0 );
+        int             y( 0 );
+        Dispatch::Timer t1( { 0, Dispatch::Interval::Kind::Nanoseconds }, Dispatch::Timer::Kind::Repeating, [ & ]() { x++; } );
+        Dispatch::Timer t2( { 0, Dispatch::Interval::Kind::Nanoseconds }, Dispatch::Timer::Kind::Transient, [ & ]() { y++; } );
+        
+        XSTestAssertTrue( t1.shouldRun() );
+        XSTestAssertTrue( t2.shouldRun() );
+        XSTestAssertEqual( x, 0 );
+        XSTestAssertEqual( y, 0 );
+        
+        t1.runIfNecessary();
+        t2.runIfNecessary();
+        
+        XSTestAssertTrue(  t1.shouldRun() );
+        XSTestAssertFalse( t2.shouldRun() );
+        XSTestAssertEqual( x, 1 );
+        XSTestAssertEqual( y, 1 );
+        
+        t1.runIfNecessary();
+        t2.runIfNecessary();
+        
+        XSTestAssertEqual( x, 2 );
+        XSTestAssertEqual( y, 1 );
+    }
     
+    {
+        int             x( 0 );
+        int             y( 0 );
+        Dispatch::Timer t1( { 1, Dispatch::Interval::Kind::Milliseconds }, Dispatch::Timer::Kind::Repeating, { 0, Dispatch::Interval::Kind::Seconds      }, [ & ]() { x++; } );
+        Dispatch::Timer t2( { 1, Dispatch::Interval::Kind::Milliseconds }, Dispatch::Timer::Kind::Repeating, { 1, Dispatch::Interval::Kind::Milliseconds }, [ & ]() { y++; } );
+        
+        XSTestAssertTrue(  t1.shouldRun() );
+        XSTestAssertFalse( t2.shouldRun() );
+        XSTestAssertEqual( x, 0 );
+        XSTestAssertEqual( y, 0 );
+        
+        t1.runIfNecessary();
+        t2.runIfNecessary();
+        
+        XSTestAssertFalse( t1.shouldRun() );
+        XSTestAssertFalse( t2.shouldRun() );
+        XSTestAssertEqual( x, 1 );
+        XSTestAssertEqual( y, 0 );
+        
+        t1.runIfNecessary();
+        t2.runIfNecessary();
+        
+        XSTestAssertFalse( t1.shouldRun() );
+        XSTestAssertFalse( t2.shouldRun() );
+        XSTestAssertEqual( x, 1 );
+        XSTestAssertEqual( y, 0 );
+        
+        Dispatch::Thread::Sleep( { 1, Dispatch::Interval::Kind::Milliseconds } );
+        
+        XSTestAssertTrue( t1.shouldRun() );
+        XSTestAssertTrue( t2.shouldRun() );
+        XSTestAssertEqual( x, 1 );
+        XSTestAssertEqual( y, 0 );
+        
+        t1.runIfNecessary();
+        t2.runIfNecessary();
+        
+        XSTestAssertFalse( t1.shouldRun() );
+        XSTestAssertFalse( t2.shouldRun() );
+        XSTestAssertEqual( x, 2 );
+        XSTestAssertEqual( y, 1 );
+    }
 }
 
 XSTest( Timer, Swap )
