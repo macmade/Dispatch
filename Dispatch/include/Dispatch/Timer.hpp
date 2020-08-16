@@ -61,11 +61,11 @@ namespace Dispatch
             bool operator ==( const Timer & o ) const;
             bool operator !=( const Timer & o ) const;
             
-            UUID     uuid()     const;
-            Interval interval() const;
-            Kind     kind()     const;
-            Action   action()   const;
-            bool shouldRun()    const;
+            UUID     uuid()      const;
+            Interval interval()  const;
+            Kind     kind()      const;
+            Action   action()    const;
+            bool     shouldRun() const;
             
             void run();
             void runIfNecessary();

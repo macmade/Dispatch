@@ -31,6 +31,9 @@
 
 namespace Dispatch
 {
+    using Clock     = std::chrono::high_resolution_clock;
+    using TimePoint = Clock::time_point;
+    
     class Timer::IMPL
     {
         public:
@@ -39,11 +42,13 @@ namespace Dispatch
             IMPL( const IMPL & o );
             ~IMPL();
             
-            UUID     _uuid;
-            Interval _interval;
-            Interval _start;
-            Kind     _kind;
-            Action   _action;
+            UUID      _uuid;
+            Interval  _interval;
+            Interval  _start;
+            Kind      _kind;
+            Action    _action;
+            TimePoint _created;
+            TimePoint _lastRun;
     };
     
     Timer::Timer( const Interval & interval, const Action & action ):
@@ -108,14 +113,33 @@ namespace Dispatch
     
     bool Timer::shouldRun() const
     {
-        return {};
+        if( this->impl->_lastRun < this->impl->_created )
+        {
+            return Clock::now() >= this->impl->_created + this->impl->_start.nanoseconds();
+        }
+        
+        if( this->impl->_kind == Kind::Transient )
+        {
+            return false;
+        }
+        
+        return Clock::now() >= this->impl->_lastRun + this->impl->_interval.nanoseconds();
     }
     
     void Timer::run()
-    {}
+    {
+        this->impl->_action.execute();
+        
+        this->impl->_lastRun = Clock::now();
+    }
     
     void Timer::runIfNecessary()
-    {}
+    {
+        if( this->shouldRun() )
+        {
+            this->run();
+        }
+    }
     
     void swap( Timer & o1, Timer & o2 )
     {
@@ -128,7 +152,8 @@ namespace Dispatch
         _interval( interval ),
         _start(    start ),
         _kind(     kind ),
-        _action(   action )
+        _action(   action ),
+        _created(  Clock::now() )
     {}
     
     Timer::IMPL::IMPL( const IMPL & o ):
@@ -136,7 +161,9 @@ namespace Dispatch
         _interval( o._interval ),
         _start(    o._start ),
         _kind(     o._kind ),
-        _action(   o._action )
+        _action(   o._action ),
+        _created(  o._created ),
+        _lastRun(  o._lastRun )
     {}
     
     Timer::IMPL::~IMPL()
