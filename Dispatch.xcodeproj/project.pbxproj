@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		05F70D0E24E896D8006CFC65 /* Dispatch-Action.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05F70D0D24E896D8006CFC65 /* Dispatch-Action.cpp */; };
 		05F70D1624E89D2D006CFC65 /* Dispatch-UUID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05F70D1524E89D2D006CFC65 /* Dispatch-UUID.cpp */; };
+		05F70D2024E97F04006CFC65 /* Dispatch-Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05F70D1F24E97F04006CFC65 /* Dispatch-Timer.cpp */; };
 		05FBE93424E7EDB70028EF06 /* RunLoop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05FBE93024E7EDB70028EF06 /* RunLoop.cpp */; };
 		05FBE93524E7EDB70028EF06 /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05FBE93124E7EDB70028EF06 /* Timer.cpp */; };
 		05FBE93624E7EDB70028EF06 /* Action.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 05FBE93224E7EDB70028EF06 /* Action.cpp */; };
@@ -69,6 +70,7 @@
 /* Begin PBXFileReference section */
 		05F70D0D24E896D8006CFC65 /* Dispatch-Action.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "Dispatch-Action.cpp"; sourceTree = "<group>"; };
 		05F70D1524E89D2D006CFC65 /* Dispatch-UUID.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "Dispatch-UUID.cpp"; sourceTree = "<group>"; };
+		05F70D1F24E97F04006CFC65 /* Dispatch-Timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "Dispatch-Timer.cpp"; sourceTree = "<group>"; };
 		05FBE8DF24E7EADB0028EF06 /* libDispatch.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libDispatch.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		05FBE8F024E7EB2C0028EF06 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		05FBE8F224E7EB4B0028EF06 /* Release - ccache.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Release - ccache.xcconfig"; sourceTree = "<group>"; };
@@ -373,6 +375,7 @@
 				05F70D0D24E896D8006CFC65 /* Dispatch-Action.cpp */,
 				05FBE99F24E86FB50028EF06 /* Dispatch-Interval.cpp */,
 				05F70D1524E89D2D006CFC65 /* Dispatch-UUID.cpp */,
+				05F70D1F24E97F04006CFC65 /* Dispatch-Timer.cpp */,
 				05FBE9A124E86FB50028EF06 /* Info.plist */,
 			);
 			path = "Dispatch-Tests";
@@ -547,6 +550,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				05F70D1624E89D2D006CFC65 /* Dispatch-UUID.cpp in Sources */,
+				05F70D2024E97F04006CFC65 /* Dispatch-Timer.cpp in Sources */,
 				05FBE9A024E86FB50028EF06 /* Dispatch-Interval.cpp in Sources */,
 				05F70D0E24E896D8006CFC65 /* Dispatch-Action.cpp in Sources */,
 			);
