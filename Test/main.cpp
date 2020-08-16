@@ -35,10 +35,6 @@
 
 int main()
 {
-    Dispatch::Queue::Normal();
-    
-    std::this_thread::sleep_for( std::chrono::seconds( 1 ) );
-    
     Dispatch::Queue::Normal().schedule
     (
         {

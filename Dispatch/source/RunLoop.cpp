@@ -47,7 +47,6 @@ namespace Dispatch
             bool                        _running;
             bool                        _stopping;
             bool                        _update;
-            Interval                    _sleep;
             std::recursive_mutex        _rmtx;
             std::condition_variable_any _cv;
             std::vector< Timer >        _timers;
@@ -66,7 +65,8 @@ namespace Dispatch
         
         while( true )
         {
-            Interval sleep = { 0, Interval::Kind::Nanoseconds };
+            Interval sleep              = { 60, Interval::Kind::Seconds };
+            std::vector< Timer > timers = {};
             
             {
                 std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
@@ -95,14 +95,32 @@ namespace Dispatch
                     return RunStatus::AlreadyRunning;
                 }
                 
-                sleep = this->impl->_sleep;
-                
-                for( const auto & timer: this->impl->_timers )
-                {
-                    timer.action().execute();
-                }
-                
                 this->impl->_update = false;
+                
+                for( const auto & timer: std::vector< Timer > { this->impl->_timers } )
+                {
+                    if( timer.shouldRun() == false )
+                    {
+                        continue;
+                    }
+                    
+                    timers.push_back( timer );
+                    
+                    if( timer.kind() == Timer::Kind::Transient )
+                    {
+                        this->removeTimer( timer );
+                    }
+                    
+                    if( timer.interval() < sleep )
+                    {
+                        sleep = timer.interval();
+                    }
+                }
+            }
+            
+            for( auto & timer: timers )
+            {
+                timer.runIfNecessary();
             }
             
             {
@@ -196,8 +214,7 @@ namespace Dispatch
     RunLoop::IMPL::IMPL():
         _running(  false ),
         _stopping( false ),
-        _update(   false ),
-        _sleep(    { 60, Interval::Kind::Seconds } )
+        _update(   false )
     {}
     
     RunLoop::IMPL::~IMPL()
