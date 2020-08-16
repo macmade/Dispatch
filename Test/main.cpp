@@ -62,7 +62,6 @@ int main()
     (
         {
             Dispatch::Interval::FromSeconds( 2 ),
-            
             []()
             {
                 std::cout << "hello, universe" << std::endl;
