@@ -99,6 +99,17 @@ namespace Dispatch
             bool operator <=( const Interval & o );
             bool operator >=( const Interval & o );
             
+            Interval & operator ++( void );
+            Interval   operator ++( int );
+            Interval & operator --( void );
+            Interval   operator --( int );
+            
+            Interval & operator +=( const Interval & value );
+            Interval & operator -=( const Interval & value );
+            
+            Interval operator +( const Interval & value );
+            Interval operator -( const Interval & value );
+            
             uint64_t value() const;
             Kind     kind()  const;
             

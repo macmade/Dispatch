@@ -389,6 +389,291 @@ XSTest( Interval, OperatorGreaterOrEqual )
     XSTestAssertFalse( i3 >= i2 );
 }
 
+XSTest( Interval, OperatorIncrementPrefix )
+{
+    Dispatch::Interval i1( 42, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i2( 42, Dispatch::Interval::Kind::Seconds );
+    Dispatch::Interval c1( ++i1 );
+    Dispatch::Interval c2( ++i2 );
+    
+    XSTestAssertEqual( i1.value(), 43ULL );
+    XSTestAssertEqual( i2.value(), 43ULL );
+    XSTestAssertEqual( c1.value(), 43ULL );
+    XSTestAssertEqual( c2.value(), 43ULL );
+    
+    XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Nanoseconds );
+    XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Seconds );
+    XSTestAssertEqual( c1.kind(), Dispatch::Interval::Kind::Nanoseconds );
+    XSTestAssertEqual( c2.kind(), Dispatch::Interval::Kind::Seconds );
+}
+
+XSTest( Interval, OperatorIncrementPostfix )
+{
+    Dispatch::Interval i1( 42, Dispatch::Interval::Kind::Nanoseconds );
+    Dispatch::Interval i2( 42, Dispatch::Interval::Kind::Seconds );
+    Dispatch::Interval c1( i1++ );
+    Dispatch::Interval c2( i2++ );
+    
+    XSTestAssertEqual( i1.value(), 43ULL );
+    XSTestAssertEqual( i2.value(), 43ULL );
+    XSTestAssertEqual( c1.value(), 42ULL );
+    XSTestAssertEqual( c2.value(), 42ULL );
+    
+    XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Nanoseconds );
+    XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Seconds );
+    XSTestAssertEqual( c1.kind(), Dispatch::Interval::Kind::Nanoseconds );
+    XSTestAssertEqual( c2.kind(), Dispatch::Interval::Kind::Seconds );
+}
+
+XSTest( Interval, OperatorDecrementPrefix )
+{
+    {
+        Dispatch::Interval i1( 42, Dispatch::Interval::Kind::Nanoseconds );
+        Dispatch::Interval i2( 42, Dispatch::Interval::Kind::Seconds );
+        Dispatch::Interval c1( --i1 );
+        Dispatch::Interval c2( --i2 );
+        
+        XSTestAssertEqual( i1.value(), 41ULL );
+        XSTestAssertEqual( i2.value(), 41ULL );
+        XSTestAssertEqual( c1.value(), 41ULL );
+        XSTestAssertEqual( c2.value(), 41ULL );
+        
+        XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Nanoseconds );
+        XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Seconds );
+        XSTestAssertEqual( c1.kind(), Dispatch::Interval::Kind::Nanoseconds );
+        XSTestAssertEqual( c2.kind(), Dispatch::Interval::Kind::Seconds );
+    }
+    
+    {
+        Dispatch::Interval i1( 0, Dispatch::Interval::Kind::Nanoseconds );
+        Dispatch::Interval i2( 0, Dispatch::Interval::Kind::Seconds );
+        Dispatch::Interval c1( --i1 );
+        Dispatch::Interval c2( --i2 );
+        
+        XSTestAssertEqual( i1.value(), 0ULL );
+        XSTestAssertEqual( i2.value(), 0ULL );
+        XSTestAssertEqual( c1.value(), 0ULL );
+        XSTestAssertEqual( c2.value(), 0ULL );
+        
+        XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Nanoseconds );
+        XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Seconds );
+        XSTestAssertEqual( c1.kind(), Dispatch::Interval::Kind::Nanoseconds );
+        XSTestAssertEqual( c2.kind(), Dispatch::Interval::Kind::Seconds );
+    }
+}
+
+XSTest( Interval, OperatorDecrementPostfix )
+{
+    {
+        Dispatch::Interval i1( 42, Dispatch::Interval::Kind::Nanoseconds );
+        Dispatch::Interval i2( 42, Dispatch::Interval::Kind::Seconds );
+        Dispatch::Interval c1( i1-- );
+        Dispatch::Interval c2( i2-- );
+        
+        XSTestAssertEqual( i1.value(), 41ULL );
+        XSTestAssertEqual( i2.value(), 41ULL );
+        XSTestAssertEqual( c1.value(), 42ULL );
+        XSTestAssertEqual( c2.value(), 42ULL );
+        
+        XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Nanoseconds );
+        XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Seconds );
+        XSTestAssertEqual( c1.kind(), Dispatch::Interval::Kind::Nanoseconds );
+        XSTestAssertEqual( c2.kind(), Dispatch::Interval::Kind::Seconds );
+    }
+    
+    {
+        Dispatch::Interval i1( 0, Dispatch::Interval::Kind::Nanoseconds );
+        Dispatch::Interval i2( 0, Dispatch::Interval::Kind::Seconds );
+        Dispatch::Interval c1( i1-- );
+        Dispatch::Interval c2( i2-- );
+        
+        XSTestAssertEqual( i1.value(), 0ULL );
+        XSTestAssertEqual( i2.value(), 0ULL );
+        XSTestAssertEqual( c1.value(), 0ULL );
+        XSTestAssertEqual( c2.value(), 0ULL );
+        
+        XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Nanoseconds );
+        XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Seconds );
+        XSTestAssertEqual( c1.kind(), Dispatch::Interval::Kind::Nanoseconds );
+        XSTestAssertEqual( c2.kind(), Dispatch::Interval::Kind::Seconds );
+    }
+}
+
+XSTest( Interval, OperatorPlusEqual )
+{
+    {
+        Dispatch::Interval i1( 42, Dispatch::Interval::Kind::Seconds );
+        Dispatch::Interval i2( 42, Dispatch::Interval::Kind::Seconds );
+        
+        i1 += i2;
+        
+        XSTestAssertEqual( i1.value(), 84ULL );
+        XSTestAssertEqual( i2.value(), 42ULL );
+        
+        XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Seconds );
+        XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Seconds );
+    }
+    
+    {
+        Dispatch::Interval i1( 42, Dispatch::Interval::Kind::Microseconds );
+        Dispatch::Interval i2(  1, Dispatch::Interval::Kind::Milliseconds );
+        
+        i1 += i2;
+        
+        XSTestAssertEqual( i1.value(), 1042000ULL );
+        XSTestAssertEqual( i2.value(),       1ULL );
+        
+        XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Nanoseconds );
+        XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Milliseconds );
+    }
+}
+
+XSTest( Interval, OperatorMinusEqual )
+{
+    {
+        Dispatch::Interval i1( 42, Dispatch::Interval::Kind::Seconds );
+        Dispatch::Interval i2( 10, Dispatch::Interval::Kind::Seconds );
+        
+        i1 -= i2;
+        
+        XSTestAssertEqual( i1.value(), 32ULL );
+        XSTestAssertEqual( i2.value(), 10ULL );
+        
+        XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Seconds );
+        XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Seconds );
+    }
+    
+    {
+        Dispatch::Interval i1( 2000, Dispatch::Interval::Kind::Microseconds );
+        Dispatch::Interval i2(    1, Dispatch::Interval::Kind::Milliseconds );
+        
+        i1 -= i2;
+        
+        XSTestAssertEqual( i1.value(), 1000000ULL );
+        XSTestAssertEqual( i2.value(),       1ULL );
+        
+        XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Nanoseconds );
+        XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Milliseconds );
+    }
+    
+    {
+        Dispatch::Interval i1( 1, Dispatch::Interval::Kind::Seconds );
+        Dispatch::Interval i2( 2, Dispatch::Interval::Kind::Seconds );
+        
+        i1 -= i2;
+        
+        XSTestAssertEqual( i1.value(), 0ULL );
+        XSTestAssertEqual( i2.value(), 2ULL );
+        
+        XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Seconds );
+        XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Seconds );
+    }
+    
+    {
+        Dispatch::Interval i1(    1, Dispatch::Interval::Kind::Seconds );
+        Dispatch::Interval i2( 2000, Dispatch::Interval::Kind::Milliseconds );
+        
+        i1 -= i2;
+        
+        XSTestAssertEqual( i1.value(),    0ULL );
+        XSTestAssertEqual( i2.value(), 2000ULL );
+        
+        XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Nanoseconds );
+        XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Milliseconds );
+    }
+}
+
+XSTest( Interval, OperatorPlus )
+{
+    {
+        Dispatch::Interval i1( 42, Dispatch::Interval::Kind::Seconds );
+        Dispatch::Interval i2( 42, Dispatch::Interval::Kind::Seconds );
+        Dispatch::Interval i3( i1 + i2 );
+        
+        XSTestAssertEqual( i1.value(), 42ULL );
+        XSTestAssertEqual( i2.value(), 42ULL );
+        XSTestAssertEqual( i3.value(), 84ULL );
+        
+        XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Seconds );
+        XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Seconds );
+        XSTestAssertEqual( i3.kind(), Dispatch::Interval::Kind::Seconds );
+    }
+    
+    {
+        Dispatch::Interval i1( 42, Dispatch::Interval::Kind::Microseconds );
+        Dispatch::Interval i2(  1, Dispatch::Interval::Kind::Milliseconds );
+        Dispatch::Interval i3( i1 + i2 );
+        
+        XSTestAssertEqual( i1.value(),      42ULL );
+        XSTestAssertEqual( i2.value(),       1ULL );
+        XSTestAssertEqual( i3.value(), 1042000ULL );
+        
+        XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Microseconds );
+        XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Milliseconds );
+        XSTestAssertEqual( i3.kind(), Dispatch::Interval::Kind::Nanoseconds );
+    }
+}
+
+XSTest( Interval, OperatorMinus  )
+
+{
+    {
+        Dispatch::Interval i1( 42, Dispatch::Interval::Kind::Seconds );
+        Dispatch::Interval i2( 10, Dispatch::Interval::Kind::Seconds );
+        Dispatch::Interval i3( i1 - i2 );
+        
+        XSTestAssertEqual( i1.value(), 42ULL );
+        XSTestAssertEqual( i2.value(), 10ULL );
+        XSTestAssertEqual( i3.value(), 32ULL );
+        
+        XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Seconds );
+        XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Seconds );
+        XSTestAssertEqual( i3.kind(), Dispatch::Interval::Kind::Seconds );
+    }
+    
+    {
+        Dispatch::Interval i1( 2000, Dispatch::Interval::Kind::Microseconds );
+        Dispatch::Interval i2(    1, Dispatch::Interval::Kind::Milliseconds );
+        Dispatch::Interval i3( i1 - i2 );
+        
+        XSTestAssertEqual( i1.value(),    2000ULL );
+        XSTestAssertEqual( i2.value(),       1ULL );
+        XSTestAssertEqual( i3.value(), 1000000ULL );
+        
+        XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Microseconds );
+        XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Milliseconds );
+        XSTestAssertEqual( i3.kind(), Dispatch::Interval::Kind::Nanoseconds );
+    }
+    
+    {
+        Dispatch::Interval i1( 1, Dispatch::Interval::Kind::Seconds );
+        Dispatch::Interval i2( 2, Dispatch::Interval::Kind::Seconds );
+        Dispatch::Interval i3( i1 - i2 );
+        
+        XSTestAssertEqual( i1.value(), 1ULL );
+        XSTestAssertEqual( i2.value(), 2ULL );
+        XSTestAssertEqual( i3.value(), 0ULL );
+        
+        XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Seconds );
+        XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Seconds );
+        XSTestAssertEqual( i3.kind(), Dispatch::Interval::Kind::Seconds );
+    }
+    
+    {
+        Dispatch::Interval i1(    1, Dispatch::Interval::Kind::Seconds );
+        Dispatch::Interval i2( 2000, Dispatch::Interval::Kind::Milliseconds );
+        Dispatch::Interval i3( i1 - i2 );
+        
+        XSTestAssertEqual( i1.value(),    1ULL );
+        XSTestAssertEqual( i2.value(), 2000ULL );
+        XSTestAssertEqual( i3.value(),    0ULL );
+        
+        XSTestAssertEqual( i1.kind(), Dispatch::Interval::Kind::Seconds );
+        XSTestAssertEqual( i2.kind(), Dispatch::Interval::Kind::Milliseconds );
+        XSTestAssertEqual( i3.kind(), Dispatch::Interval::Kind::Nanoseconds );
+    }
+}
+
 XSTest( Interval, Value )
 {
     Dispatch::Interval i1(  0, Dispatch::Interval::Kind::Seconds );

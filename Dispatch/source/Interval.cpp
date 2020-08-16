@@ -178,6 +178,95 @@ namespace Dispatch
         return this->nanoseconds() >= o.nanoseconds();
     }
     
+    Interval & Interval::operator ++( void )
+    {
+        this->impl->_value++;
+        
+        return *( this );
+    }
+    
+    Interval Interval::operator ++( int )
+    {
+        Interval i( *( this ) );
+        
+        operator++();
+        
+        return i;
+    }
+    
+    Interval & Interval::operator --( void )
+    {
+        if( this->impl->_value > 0 )
+        {
+            this->impl->_value--;
+        }
+        
+        return *( this );
+    }
+    
+    Interval Interval::operator --( int )
+    {
+        Interval i( *( this ) );
+        
+        operator--();
+        
+        return i;
+    }
+    
+    Interval & Interval::operator +=( const Interval & value )
+    {
+        if( this->impl->_kind != value.impl->_kind )
+        {
+            int64_t ns = this->nanoseconds().count() + value.nanoseconds().count();
+            
+            this->impl->_value = static_cast< uint64_t >( ns );
+            this->impl->_kind  = Kind::Nanoseconds;
+        }
+        else
+        {
+            this->impl->_value += value.impl->_value;
+        }
+        
+        return *( this );
+    }
+    
+    Interval & Interval::operator -=( const Interval & value )
+    {
+        if( this->impl->_kind != value.impl->_kind )
+        {
+            int64_t ns = this->nanoseconds().count() - value.nanoseconds().count();
+            
+            this->impl->_value = static_cast< uint64_t >( ( ns < 0 ) ? 0 : ns );
+            this->impl->_kind  = Kind::Nanoseconds;
+        }
+        else
+        {
+            int64_t v = static_cast< int64_t >( this->impl->_value ) - static_cast< int64_t >( value.impl->_value );
+            
+            this->impl->_value = static_cast< uint64_t >( ( v < 0 ) ? 0 : v );
+        }
+        
+        return *( this );
+    }
+    
+    Interval Interval::operator +( const Interval & value )
+    {
+        Interval i( *( this ) );
+        
+        i += value;
+        
+        return i;
+    }
+    
+    Interval Interval::operator -( const Interval & value )
+    {
+        Interval i( *( this ) );
+        
+        i -= value;
+        
+        return i;
+    }
+    
     uint64_t Interval::value() const
     {
         return this->impl->_value;
