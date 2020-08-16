@@ -34,6 +34,7 @@
 #include <vector>
 #include <condition_variable>
 #include <chrono>
+#include <iostream>
 
 namespace Dispatch
 {
@@ -65,7 +66,7 @@ namespace Dispatch
         
         while( true )
         {
-            Interval sleep              = { 60, Interval::Kind::Seconds };
+            Interval             sleep  = { 60, Interval::Kind::Seconds };
             std::vector< Timer > timers = {};
             
             {
@@ -97,8 +98,13 @@ namespace Dispatch
                 
                 this->impl->_update = false;
                 
-                for( const auto & timer: std::vector< Timer > { this->impl->_timers } )
+                for( auto & timer: std::vector< Timer > { this->impl->_timers } )
                 {
+                    if( timer.interval() < sleep )
+                    {
+                        sleep = timer.interval();
+                    }
+                    
                     if( timer.shouldRun() == false )
                     {
                         continue;
@@ -109,11 +115,6 @@ namespace Dispatch
                     if( timer.kind() == Timer::Kind::Transient )
                     {
                         this->removeTimer( timer );
-                    }
-                    
-                    if( timer.interval() < sleep )
-                    {
-                        sleep = timer.interval();
                     }
                 }
             }

@@ -46,6 +46,30 @@ int main()
         }
     );
     
+    Dispatch::Queue::Normal().schedule
+    (
+        {
+            Dispatch::Interval::FromSeconds( 1 ),
+            Dispatch::Timer::Kind::Transient,
+            []()
+            {
+                std::cout << "hello, transient" << std::endl;
+            }
+        }
+    );
+    
+    Dispatch::Queue::Normal().schedule
+    (
+        {
+            Dispatch::Interval::FromSeconds( 2 ),
+            
+            []()
+            {
+                std::cout << "hello, universe" << std::endl;
+            }
+        }
+    );
+    
     {
         std::mutex              mtx;
         std::unique_lock        l( mtx );
