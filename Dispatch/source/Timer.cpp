@@ -35,12 +35,13 @@ namespace Dispatch
     {
         public:
             
-            IMPL( const Interval & interval, Kind kind, const Action & action );
+            IMPL( const Interval & interval, Kind kind, const Interval & start, const Action & action );
             IMPL( const IMPL & o );
             ~IMPL();
             
             UUID     _uuid;
             Interval _interval;
+            Interval _start;
             Kind     _kind;
             Action   _action;
     };
@@ -50,7 +51,11 @@ namespace Dispatch
     {}
     
     Timer::Timer( const Interval & interval, Kind kind, const Action & action ):
-        impl( std::make_unique< IMPL >( interval, kind, action ) )
+        Timer( interval, kind, { 0, Interval::Kind::Nanoseconds }, action )
+    {}
+    
+    Timer::Timer( const Interval & interval, Kind kind, const Interval & start, const Action & action ):
+        impl( std::make_unique< IMPL >( interval, kind, start, action ) )
     {}
     
     Timer::Timer( const Timer & o ):
@@ -101,6 +106,17 @@ namespace Dispatch
         return this->impl->_action;
     }
     
+    bool Timer::shouldRun() const
+    {
+        return {};
+    }
+    
+    void Timer::run()
+    {}
+    
+    void Timer::runIfNecessary()
+    {}
+    
     void swap( Timer & o1, Timer & o2 )
     {
         using std::swap;
@@ -108,8 +124,9 @@ namespace Dispatch
         swap( o1.impl, o2.impl );
     }
     
-    Timer::IMPL::IMPL( const Interval & interval, Kind kind, const Action & action ):
+    Timer::IMPL::IMPL( const Interval & interval, Kind kind, const Interval & start, const Action & action ):
         _interval( interval ),
+        _start(    start ),
         _kind(     kind ),
         _action(   action )
     {}
@@ -117,6 +134,7 @@ namespace Dispatch
     Timer::IMPL::IMPL( const IMPL & o ):
         _uuid(     o._uuid ),
         _interval( o._interval ),
+        _start(    o._start ),
         _kind(     o._kind ),
         _action(   o._action )
     {}

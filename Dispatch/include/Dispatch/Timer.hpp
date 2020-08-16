@@ -35,6 +35,7 @@
 #include <Dispatch/UUID.hpp>
 #include <Dispatch/Interval.hpp>
 #include <Dispatch/Action.hpp>
+#include <chrono>
 
 namespace Dispatch
 {
@@ -50,6 +51,7 @@ namespace Dispatch
             
             Timer( const Interval & interval, const Action & action );
             Timer( const Interval & interval, Kind kind, const Action & action );
+            Timer( const Interval & interval, Kind kind, const Interval & start, const Action & action );
             Timer( const Timer & o );
             Timer( Timer && o ) noexcept;
             ~Timer();
@@ -63,6 +65,10 @@ namespace Dispatch
             Interval interval() const;
             Kind     kind()     const;
             Action   action()   const;
+            bool shouldRun()    const;
+            
+            void run();
+            void runIfNecessary();
             
             friend void swap( Timer & o1, Timer & o2 );
             
