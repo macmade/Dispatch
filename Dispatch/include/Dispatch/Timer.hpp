@@ -76,7 +76,7 @@ namespace Dispatch
             
             class IMPL;
             
-            std::unique_ptr< IMPL > impl;
+            std::shared_ptr< IMPL > impl;
     };
 }
 

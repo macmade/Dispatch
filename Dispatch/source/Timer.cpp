@@ -60,11 +60,11 @@ namespace Dispatch
     {}
     
     Timer::Timer( const Interval & interval, Kind kind, const Interval & start, const Action & action ):
-        impl( std::make_unique< IMPL >( interval, kind, start, action ) )
+        impl( std::make_shared< IMPL >( interval, kind, start, action ) )
     {}
     
     Timer::Timer( const Timer & o ):
-        impl( std::make_unique< IMPL >( *( o.impl ) ) )
+        impl( o.impl )
     {}
     
     Timer::Timer( Timer && o ) noexcept:
