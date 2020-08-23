@@ -33,8 +33,8 @@
 
 XSTest( Timer, CTOR_Interval_Action )
 {
-    Dispatch::Timer t1( { 42, Dispatch::Interval::Kind::Seconds }, []() {} );
-    Dispatch::Timer t2( {  0, Dispatch::Interval::Kind::Minutes }, nullptr );
+    Dispatch::Timer t1( Dispatch::Interval::FromSeconds( 42 ), []() {} );
+    Dispatch::Timer t2( Dispatch::Interval::FromMinutes(  0 ), nullptr );
     
     XSTestAssertTrue( t1.uuid().string().size() > 0 );
     XSTestAssertTrue( t2.uuid().string().size() > 0 );
@@ -54,8 +54,8 @@ XSTest( Timer, CTOR_Interval_Action )
 
 XSTest( Timer, CTOR_Interval_Kind_Action )
 {
-    Dispatch::Timer t1( { 42, Dispatch::Interval::Kind::Seconds }, Dispatch::Timer::Kind::Repeating, []() {} );
-    Dispatch::Timer t2( {  0, Dispatch::Interval::Kind::Minutes }, Dispatch::Timer::Kind::Transient, nullptr );
+    Dispatch::Timer t1( Dispatch::Interval::FromSeconds( 42 ), Dispatch::Timer::Kind::Repeating, []() {} );
+    Dispatch::Timer t2( Dispatch::Interval::FromMinutes(  0 ), Dispatch::Timer::Kind::Transient, nullptr );
     
     XSTestAssertTrue( t1.uuid().string().size() > 0 );
     XSTestAssertTrue( t2.uuid().string().size() > 0 );
@@ -75,8 +75,8 @@ XSTest( Timer, CTOR_Interval_Kind_Action )
 
 XSTest( Timer, CTOR_Interval_Kind_Start_Action )
 {
-    Dispatch::Timer t1( { 42, Dispatch::Interval::Kind::Seconds }, Dispatch::Timer::Kind::Repeating, { 0, Dispatch::Interval::Kind::Seconds }, []() {} );
-    Dispatch::Timer t2( {  0, Dispatch::Interval::Kind::Minutes }, Dispatch::Timer::Kind::Transient, { 0, Dispatch::Interval::Kind::Seconds }, nullptr );
+    Dispatch::Timer t1( Dispatch::Interval::FromSeconds( 42 ), Dispatch::Timer::Kind::Repeating, Dispatch::Interval::FromSeconds( 0 ), []() {} );
+    Dispatch::Timer t2( Dispatch::Interval::FromMinutes(  0 ), Dispatch::Timer::Kind::Transient, Dispatch::Interval::FromSeconds( 0 ), nullptr );
     
     XSTestAssertTrue( t1.uuid().string().size() > 0 );
     XSTestAssertTrue( t2.uuid().string().size() > 0 );
@@ -96,8 +96,8 @@ XSTest( Timer, CTOR_Interval_Kind_Start_Action )
 
 XSTest( Timer, CCTOR )
 {
-    Dispatch::Timer t1( { 42, Dispatch::Interval::Kind::Seconds }, Dispatch::Timer::Kind::Repeating, { 0, Dispatch::Interval::Kind::Seconds }, []() {} );
-    Dispatch::Timer t2( {  0, Dispatch::Interval::Kind::Minutes }, Dispatch::Timer::Kind::Transient, { 0, Dispatch::Interval::Kind::Seconds }, nullptr );
+    Dispatch::Timer t1( Dispatch::Interval::FromSeconds( 42 ), Dispatch::Timer::Kind::Repeating, Dispatch::Interval::FromSeconds( 0 ), []() {} );
+    Dispatch::Timer t2( Dispatch::Interval::FromMinutes(  0 ), Dispatch::Timer::Kind::Transient, Dispatch::Interval::FromSeconds( 0 ), nullptr );
     Dispatch::Timer c1( t1 );
     Dispatch::Timer c2( t2 );
     
@@ -129,8 +129,8 @@ XSTest( Timer, CCTOR )
 
 XSTest( Timer, MCTOR )
 {
-    Dispatch::Timer t1( { 42, Dispatch::Interval::Kind::Seconds }, Dispatch::Timer::Kind::Repeating, { 0, Dispatch::Interval::Kind::Seconds }, []() {} );
-    Dispatch::Timer t2( {  0, Dispatch::Interval::Kind::Minutes }, Dispatch::Timer::Kind::Transient, { 0, Dispatch::Interval::Kind::Seconds }, nullptr );
+    Dispatch::Timer t1( Dispatch::Interval::FromSeconds( 42 ), Dispatch::Timer::Kind::Repeating, Dispatch::Interval::FromSeconds( 0 ), []() {} );
+    Dispatch::Timer t2( Dispatch::Interval::FromMinutes(  0 ), Dispatch::Timer::Kind::Transient, Dispatch::Interval::FromSeconds( 0 ), nullptr );
     Dispatch::Timer c1( std::move( t1 ) );
     Dispatch::Timer c2( std::move( t2 ) );
     
@@ -152,10 +152,10 @@ XSTest( Timer, MCTOR )
 
 XSTest( Timer, OperatorAssign )
 {
-    Dispatch::Timer t1( { 42, Dispatch::Interval::Kind::Seconds }, Dispatch::Timer::Kind::Repeating, { 0, Dispatch::Interval::Kind::Seconds }, []() {} );
-    Dispatch::Timer t2( {  0, Dispatch::Interval::Kind::Minutes }, Dispatch::Timer::Kind::Transient, { 0, Dispatch::Interval::Kind::Seconds }, nullptr );
-    Dispatch::Timer t3( {  1, Dispatch::Interval::Kind::Hours },   Dispatch::Timer::Kind::Transient, { 0, Dispatch::Interval::Kind::Seconds }, nullptr );
-    Dispatch::Timer t4( {  1, Dispatch::Interval::Kind::Hours },   Dispatch::Timer::Kind::Repeating, { 0, Dispatch::Interval::Kind::Seconds }, []() {} );
+    Dispatch::Timer t1( Dispatch::Interval::FromSeconds( 42 ), Dispatch::Timer::Kind::Repeating, Dispatch::Interval::FromSeconds( 0 ), []() {} );
+    Dispatch::Timer t2( Dispatch::Interval::FromMinutes(  0 ), Dispatch::Timer::Kind::Transient, Dispatch::Interval::FromSeconds( 0 ), nullptr );
+    Dispatch::Timer t3( Dispatch::Interval::FromHours(    1 ), Dispatch::Timer::Kind::Transient, Dispatch::Interval::FromSeconds( 0 ), nullptr );
+    Dispatch::Timer t4( Dispatch::Interval::FromHours(    1 ), Dispatch::Timer::Kind::Repeating, Dispatch::Interval::FromSeconds( 0 ), []() {} );
     
     t3 = t1;
     t4 = t2;
@@ -188,8 +188,8 @@ XSTest( Timer, OperatorAssign )
 
 XSTest( Timer, OperatorEqual )
 {
-    Dispatch::Timer t1( { 42, Dispatch::Interval::Kind::Seconds }, Dispatch::Timer::Kind::Repeating, { 0, Dispatch::Interval::Kind::Seconds }, []() {} );
-    Dispatch::Timer t2( { 42, Dispatch::Interval::Kind::Seconds }, Dispatch::Timer::Kind::Repeating, { 0, Dispatch::Interval::Kind::Seconds }, []() {} );
+    Dispatch::Timer t1( Dispatch::Interval::FromSeconds( 42 ), Dispatch::Timer::Kind::Repeating, Dispatch::Interval::FromSeconds( 0 ), []() {} );
+    Dispatch::Timer t2( Dispatch::Interval::FromSeconds( 42 ), Dispatch::Timer::Kind::Repeating, Dispatch::Interval::FromSeconds( 0 ), []() {} );
     Dispatch::Timer t3( t1 );
     
     XSTestAssertFalse( t1 == t2 );
@@ -198,8 +198,8 @@ XSTest( Timer, OperatorEqual )
 
 XSTest( Timer, OperatorNotEqual )
 {
-    Dispatch::Timer t1( { 42, Dispatch::Interval::Kind::Seconds }, Dispatch::Timer::Kind::Repeating, { 0, Dispatch::Interval::Kind::Seconds }, []() {} );
-    Dispatch::Timer t2( { 42, Dispatch::Interval::Kind::Seconds }, Dispatch::Timer::Kind::Repeating, { 0, Dispatch::Interval::Kind::Seconds }, []() {} );
+    Dispatch::Timer t1( Dispatch::Interval::FromSeconds( 42 ), Dispatch::Timer::Kind::Repeating, Dispatch::Interval::FromSeconds( 0 ), []() {} );
+    Dispatch::Timer t2( Dispatch::Interval::FromSeconds( 42 ), Dispatch::Timer::Kind::Repeating, Dispatch::Interval::FromSeconds( 0 ), []() {} );
     Dispatch::Timer t3( t1 );
     
     XSTestAssertTrue(  t1 != t2 );
@@ -208,8 +208,8 @@ XSTest( Timer, OperatorNotEqual )
 
 XSTest( Timer, UUID )
 {
-    Dispatch::Timer t1( { 42, Dispatch::Interval::Kind::Seconds }, Dispatch::Timer::Kind::Repeating, { 0, Dispatch::Interval::Kind::Seconds }, []() {} );
-    Dispatch::Timer t2( { 42, Dispatch::Interval::Kind::Seconds }, Dispatch::Timer::Kind::Repeating, { 0, Dispatch::Interval::Kind::Seconds }, []() {} );
+    Dispatch::Timer t1( Dispatch::Interval::FromSeconds( 42 ), Dispatch::Timer::Kind::Repeating, Dispatch::Interval::FromSeconds( 0 ), []() {} );
+    Dispatch::Timer t2( Dispatch::Interval::FromSeconds( 42 ), Dispatch::Timer::Kind::Repeating, Dispatch::Interval::FromSeconds( 0 ), []() {} );
     Dispatch::Timer t3( t1 );
     
     XSTestAssertTrue( t1.uuid().string().size() > 0 );
@@ -222,8 +222,8 @@ XSTest( Timer, UUID )
 
 XSTest( Timer, Interval )
 {
-    Dispatch::Timer t1( { 42, Dispatch::Interval::Kind::Milliseconds }, []() {} );
-    Dispatch::Timer t2( {  1, Dispatch::Interval::Kind::Seconds },      []() {} );
+    Dispatch::Timer t1( Dispatch::Interval::FromMilliseconds( 42 ), []() {} );
+    Dispatch::Timer t2( Dispatch::Interval::FromSeconds(       1 ), []() {} );
     
     XSTestAssertEqual( t1.interval().value(), 42ULL );
     XSTestAssertEqual( t2.interval().value(),  1ULL );
@@ -234,8 +234,8 @@ XSTest( Timer, Interval )
 
 XSTest( Timer, Kind )
 {
-    Dispatch::Timer t1( { 42, Dispatch::Interval::Kind::Milliseconds }, Dispatch::Timer::Kind::Repeating, []() {} );
-    Dispatch::Timer t2( {  1, Dispatch::Interval::Kind::Seconds },      Dispatch::Timer::Kind::Transient, []() {} );
+    Dispatch::Timer t1( Dispatch::Interval::FromMilliseconds( 42 ), Dispatch::Timer::Kind::Repeating, []() {} );
+    Dispatch::Timer t2( Dispatch::Interval::FromSeconds(       1 ), Dispatch::Timer::Kind::Transient, []() {} );
     
     XSTestAssertEqual( t1.kind(), Dispatch::Timer::Kind::Repeating );
     XSTestAssertEqual( t2.kind(), Dispatch::Timer::Kind::Transient );
@@ -245,9 +245,9 @@ XSTest( Timer, Action )
 {
     int             x( 0 );
     int             y( 0 );
-    Dispatch::Timer t1( { 1, Dispatch::Interval::Kind::Seconds }, [ & ]() { x++; } );
-    Dispatch::Timer t2( { 1, Dispatch::Interval::Kind::Seconds }, [ & ]() { y++; } );
-    Dispatch::Timer t3( { 1, Dispatch::Interval::Kind::Seconds }, nullptr );
+    Dispatch::Timer t1( Dispatch::Interval::FromSeconds( 1 ), [ & ]() { x++; } );
+    Dispatch::Timer t2( Dispatch::Interval::FromSeconds( 1 ), [ & ]() { y++; } );
+    Dispatch::Timer t3( Dispatch::Interval::FromSeconds( 1 ), nullptr );
     
     XSTestAssertNotEqual( t1.action(), nullptr );
     XSTestAssertNotEqual( t2.action(), nullptr );
@@ -270,9 +270,9 @@ XSTest( Timer, Action )
 XSTest( Timer, NextRunTime )
 {
     {
-        Dispatch::Timer t1( { 100, Dispatch::Interval::Kind::Milliseconds }, Dispatch::Timer::Kind::Repeating, []() {} );
-        Dispatch::Timer t2( { 200, Dispatch::Interval::Kind::Milliseconds }, Dispatch::Timer::Kind::Repeating, []() {} );
-        Dispatch::Timer t3( { 100, Dispatch::Interval::Kind::Milliseconds }, Dispatch::Timer::Kind::Transient, []() {} );
+        Dispatch::Timer t1( Dispatch::Interval::FromMilliseconds( 100 ), Dispatch::Timer::Kind::Repeating, []() {} );
+        Dispatch::Timer t2( Dispatch::Interval::FromMilliseconds( 200 ), Dispatch::Timer::Kind::Repeating, []() {} );
+        Dispatch::Timer t3( Dispatch::Interval::FromMilliseconds( 100 ), Dispatch::Timer::Kind::Transient, []() {} );
         
         std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
         
@@ -296,9 +296,9 @@ XSTest( Timer, NextRunTime )
     }
     
     {
-        Dispatch::Timer t1( { 100, Dispatch::Interval::Kind::Milliseconds }, Dispatch::Timer::Kind::Repeating, { 100, Dispatch::Interval::Kind::Milliseconds }, []() {} );
-        Dispatch::Timer t2( { 200, Dispatch::Interval::Kind::Milliseconds }, Dispatch::Timer::Kind::Repeating, { 200, Dispatch::Interval::Kind::Milliseconds }, []() {} );
-        Dispatch::Timer t3( { 100, Dispatch::Interval::Kind::Milliseconds }, Dispatch::Timer::Kind::Transient, { 100, Dispatch::Interval::Kind::Milliseconds }, []() {} );
+        Dispatch::Timer t1( Dispatch::Interval::FromMilliseconds( 100 ), Dispatch::Timer::Kind::Repeating, Dispatch::Interval::FromMilliseconds( 100 ), []() {} );
+        Dispatch::Timer t2( Dispatch::Interval::FromMilliseconds( 200 ), Dispatch::Timer::Kind::Repeating, Dispatch::Interval::FromMilliseconds( 200 ), []() {} );
+        Dispatch::Timer t3( Dispatch::Interval::FromMilliseconds( 100 ), Dispatch::Timer::Kind::Transient, Dispatch::Interval::FromMilliseconds( 100 ), []() {} );
         
         std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
         
@@ -329,8 +329,8 @@ XSTest( Timer, NextRunTime )
 XSTest( Timer, ShouldRun )
 {
     {
-        Dispatch::Timer t1( { 0, Dispatch::Interval::Kind::Nanoseconds }, Dispatch::Timer::Kind::Repeating, []() {} );
-        Dispatch::Timer t2( { 0, Dispatch::Interval::Kind::Nanoseconds }, Dispatch::Timer::Kind::Transient, []() {} );
+        Dispatch::Timer t1( Dispatch::Interval::FromNanoseconds( 0 ), Dispatch::Timer::Kind::Repeating, []() {} );
+        Dispatch::Timer t2( Dispatch::Interval::FromNanoseconds( 0 ), Dispatch::Timer::Kind::Transient, []() {} );
         
         XSTestAssertTrue( t1.shouldRun() );
         XSTestAssertTrue( t2.shouldRun() );
@@ -343,8 +343,8 @@ XSTest( Timer, ShouldRun )
     }
     
     {
-        Dispatch::Timer t1( { 1, Dispatch::Interval::Kind::Seconds }, Dispatch::Timer::Kind::Repeating, { 0, Dispatch::Interval::Kind::Seconds      }, []() {} );
-        Dispatch::Timer t2( { 1, Dispatch::Interval::Kind::Seconds }, Dispatch::Timer::Kind::Repeating, { 1, Dispatch::Interval::Kind::Milliseconds }, []() {} );
+        Dispatch::Timer t1( Dispatch::Interval::FromSeconds( 1 ), Dispatch::Timer::Kind::Repeating, Dispatch::Interval::FromSeconds(      0 ), []() {} );
+        Dispatch::Timer t2( Dispatch::Interval::FromSeconds( 1 ), Dispatch::Timer::Kind::Repeating, Dispatch::Interval::FromMilliseconds( 1 ), []() {} );
         
         XSTestAssertTrue(  t1.shouldRun() );
         XSTestAssertFalse( t2.shouldRun() );
@@ -368,8 +368,8 @@ XSTest( Timer, Run )
     {
         int             x( 0 );
         int             y( 0 );
-        Dispatch::Timer t1( { 0, Dispatch::Interval::Kind::Nanoseconds }, Dispatch::Timer::Kind::Repeating, [ & ]() { x++; } );
-        Dispatch::Timer t2( { 0, Dispatch::Interval::Kind::Nanoseconds }, Dispatch::Timer::Kind::Transient, [ & ]() { y++; } );
+        Dispatch::Timer t1( Dispatch::Interval::FromNanoseconds( 0 ), Dispatch::Timer::Kind::Repeating, [ & ]() { x++; } );
+        Dispatch::Timer t2( Dispatch::Interval::FromNanoseconds( 0 ), Dispatch::Timer::Kind::Transient, [ & ]() { y++; } );
         
         XSTestAssertTrue( t1.shouldRun() );
         XSTestAssertTrue( t2.shouldRun() );
@@ -394,8 +394,8 @@ XSTest( Timer, Run )
     {
         int             x( 0 );
         int             y( 0 );
-        Dispatch::Timer t1( { 1, Dispatch::Interval::Kind::Seconds }, Dispatch::Timer::Kind::Repeating, { 0, Dispatch::Interval::Kind::Seconds      }, [ & ]() { x++; } );
-        Dispatch::Timer t2( { 1, Dispatch::Interval::Kind::Seconds }, Dispatch::Timer::Kind::Repeating, { 1, Dispatch::Interval::Kind::Milliseconds }, [ & ]() { y++; } );
+        Dispatch::Timer t1( Dispatch::Interval::FromSeconds( 1 ), Dispatch::Timer::Kind::Repeating, Dispatch::Interval::FromSeconds(      0 ), [ & ]() { x++; } );
+        Dispatch::Timer t2( Dispatch::Interval::FromSeconds( 1 ), Dispatch::Timer::Kind::Repeating, Dispatch::Interval::FromMilliseconds( 1 ), [ & ]() { y++; } );
         
         XSTestAssertTrue(  t1.shouldRun() );
         XSTestAssertFalse( t2.shouldRun() );
@@ -425,8 +425,8 @@ XSTest( Timer, RunIfNecessary )
     {
         int             x( 0 );
         int             y( 0 );
-        Dispatch::Timer t1( { 0, Dispatch::Interval::Kind::Nanoseconds }, Dispatch::Timer::Kind::Repeating, [ & ]() { x++; } );
-        Dispatch::Timer t2( { 0, Dispatch::Interval::Kind::Nanoseconds }, Dispatch::Timer::Kind::Transient, [ & ]() { y++; } );
+        Dispatch::Timer t1( Dispatch::Interval::FromNanoseconds( 0 ), Dispatch::Timer::Kind::Repeating, [ & ]() { x++; } );
+        Dispatch::Timer t2( Dispatch::Interval::FromNanoseconds( 0 ), Dispatch::Timer::Kind::Transient, [ & ]() { y++; } );
         
         XSTestAssertTrue( t1.shouldRun() );
         XSTestAssertTrue( t2.shouldRun() );
@@ -451,8 +451,8 @@ XSTest( Timer, RunIfNecessary )
     {
         int             x( 0 );
         int             y( 0 );
-        Dispatch::Timer t1( { 1, Dispatch::Interval::Kind::Milliseconds }, Dispatch::Timer::Kind::Repeating, { 0, Dispatch::Interval::Kind::Seconds      }, [ & ]() { x++; } );
-        Dispatch::Timer t2( { 1, Dispatch::Interval::Kind::Milliseconds }, Dispatch::Timer::Kind::Repeating, { 1, Dispatch::Interval::Kind::Milliseconds }, [ & ]() { y++; } );
+        Dispatch::Timer t1( Dispatch::Interval::FromMilliseconds( 1 ), Dispatch::Timer::Kind::Repeating, Dispatch::Interval::FromSeconds(      0 ), [ & ]() { x++; } );
+        Dispatch::Timer t2( Dispatch::Interval::FromMilliseconds( 1 ), Dispatch::Timer::Kind::Repeating, Dispatch::Interval::FromMilliseconds( 1 ), [ & ]() { y++; } );
         
         XSTestAssertTrue(  t1.shouldRun() );
         XSTestAssertFalse( t2.shouldRun() );
@@ -475,7 +475,7 @@ XSTest( Timer, RunIfNecessary )
         XSTestAssertEqual( x, 1 );
         XSTestAssertEqual( y, 0 );
         
-        Dispatch::Thread::Sleep( { 1, Dispatch::Interval::Kind::Milliseconds } );
+        Dispatch::Thread::Sleep( Dispatch::Interval::FromMilliseconds( 1 ) );
         
         XSTestAssertTrue( t1.shouldRun() );
         XSTestAssertTrue( t2.shouldRun() );
@@ -494,8 +494,8 @@ XSTest( Timer, RunIfNecessary )
 
 XSTest( Timer, Swap )
 {
-    Dispatch::Timer t1( { 42, Dispatch::Interval::Kind::Seconds }, Dispatch::Timer::Kind::Repeating, { 0, Dispatch::Interval::Kind::Seconds }, []() {} );
-    Dispatch::Timer t2( {  0, Dispatch::Interval::Kind::Minutes }, Dispatch::Timer::Kind::Transient, { 0, Dispatch::Interval::Kind::Seconds }, nullptr );
+    Dispatch::Timer t1( Dispatch::Interval::FromSeconds( 42 ), Dispatch::Timer::Kind::Repeating, Dispatch::Interval::FromSeconds( 0 ), []() {} );
+    Dispatch::Timer t2( Dispatch::Interval::FromMinutes(  0 ), Dispatch::Timer::Kind::Transient, Dispatch::Interval::FromSeconds( 0 ), nullptr );
     Dispatch::Timer c1( t1 );
     Dispatch::Timer c2( t2 );
     
