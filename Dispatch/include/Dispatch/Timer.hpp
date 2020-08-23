@@ -43,6 +43,9 @@ namespace Dispatch
     {
         public:
             
+            using Clock     = std::chrono::high_resolution_clock;
+            using TimePoint = Clock::time_point;
+            
             enum class Kind
             {
                 Repeating,
@@ -61,11 +64,12 @@ namespace Dispatch
             bool operator ==( const Timer & o ) const;
             bool operator !=( const Timer & o ) const;
             
-            UUID     uuid()      const;
-            Interval interval()  const;
-            Kind     kind()      const;
-            Action   action()    const;
-            bool     shouldRun() const;
+            UUID      uuid()        const;
+            Interval  interval()    const;
+            Kind      kind()        const;
+            Action    action()      const;
+            TimePoint nextRunTime() const;
+            bool      shouldRun()   const;
             
             void run();
             void runIfNecessary();

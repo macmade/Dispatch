@@ -66,7 +66,6 @@ namespace Dispatch
         
         while( true )
         {
-            Interval             sleep  = { 60, Interval::Kind::Seconds };
             std::vector< Timer > timers = {};
             
             {
@@ -100,11 +99,6 @@ namespace Dispatch
                 
                 for( auto & timer: std::vector< Timer > { this->impl->_timers } )
                 {
-                    if( timer.interval() < sleep )
-                    {
-                        sleep = timer.interval();
-                    }
-                    
                     if( timer.shouldRun() == false )
                     {
                         continue;
@@ -125,17 +119,40 @@ namespace Dispatch
             }
             
             {
-                std::unique_lock< std::recursive_mutex > l( this->impl->_rmtx );
+                Timer::TimePoint next = Timer::Clock::now() + std::chrono::seconds( 60 );
                 
-                this->impl->_cv.wait_for
-                (
-                    l,
-                    sleep.nanoseconds(),
-                    [ & ]() -> bool
+                {
+                    std::lock_guard< std::recursive_mutex > l( this->impl->_rmtx );
+                    
+                    for( const auto & timer: this->impl->_timers )
                     {
-                        return this->impl->_update;
+                        Timer::TimePoint tp( timer.nextRunTime() );
+                        
+                        if( tp < next )
+                        {
+                            next = tp;
+                        }
                     }
-                );
+                }
+                
+                if( next <= Timer::Clock::now() )
+                {
+                    continue;
+                }
+                
+                {
+                    std::unique_lock< std::recursive_mutex > l( this->impl->_rmtx );
+                    
+                    this->impl->_cv.wait_until
+                    (
+                        l,
+                        next,
+                        [ & ]() -> bool
+                        {
+                            return this->impl->_update;
+                        }
+                    );
+                }
             }
         }
     }

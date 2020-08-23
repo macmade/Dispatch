@@ -267,6 +267,65 @@ XSTest( Timer, Action )
     XSTestAssertEqual( y, 1 );
 }
 
+XSTest( Timer, NextRunTime )
+{
+    {
+        Dispatch::Timer t1( { 100, Dispatch::Interval::Kind::Milliseconds }, Dispatch::Timer::Kind::Repeating, []() {} );
+        Dispatch::Timer t2( { 200, Dispatch::Interval::Kind::Milliseconds }, Dispatch::Timer::Kind::Repeating, []() {} );
+        Dispatch::Timer t3( { 100, Dispatch::Interval::Kind::Milliseconds }, Dispatch::Timer::Kind::Transient, []() {} );
+        
+        std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
+        
+        XSTestAssertTrue( t1.nextRunTime() < now );
+        XSTestAssertTrue( t2.nextRunTime() < now );
+        XSTestAssertTrue( t3.nextRunTime() < now );
+        
+        t1.run();
+        t2.run();
+        t3.run();
+        
+        now = std::chrono::high_resolution_clock::now();
+        
+        XSTestAssertTrue( t3.nextRunTime() < now );
+        
+        XSTestAssertTrue( t1.nextRunTime() > now + std::chrono::milliseconds(  90 ) );
+        XSTestAssertTrue( t2.nextRunTime() > now + std::chrono::milliseconds( 190 ) );
+        
+        XSTestAssertTrue( t1.nextRunTime() < now + std::chrono::milliseconds( 110 ) );
+        XSTestAssertTrue( t2.nextRunTime() < now + std::chrono::milliseconds( 210 ) );
+    }
+    
+    {
+        Dispatch::Timer t1( { 100, Dispatch::Interval::Kind::Milliseconds }, Dispatch::Timer::Kind::Repeating, { 100, Dispatch::Interval::Kind::Milliseconds }, []() {} );
+        Dispatch::Timer t2( { 200, Dispatch::Interval::Kind::Milliseconds }, Dispatch::Timer::Kind::Repeating, { 200, Dispatch::Interval::Kind::Milliseconds }, []() {} );
+        Dispatch::Timer t3( { 100, Dispatch::Interval::Kind::Milliseconds }, Dispatch::Timer::Kind::Transient, { 100, Dispatch::Interval::Kind::Milliseconds }, []() {} );
+        
+        std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
+        
+        XSTestAssertTrue( t1.nextRunTime() > now + std::chrono::milliseconds(  90 ) );
+        XSTestAssertTrue( t2.nextRunTime() > now + std::chrono::milliseconds( 190 ) );
+        XSTestAssertTrue( t3.nextRunTime() > now + std::chrono::milliseconds(  90 ) );
+        
+        XSTestAssertTrue( t1.nextRunTime() < now + std::chrono::milliseconds( 110 ) );
+        XSTestAssertTrue( t2.nextRunTime() < now + std::chrono::milliseconds( 210 ) );
+        XSTestAssertTrue( t3.nextRunTime() < now + std::chrono::milliseconds( 110 ) );
+        
+        t1.run();
+        t2.run();
+        t3.run();
+        
+        now = std::chrono::high_resolution_clock::now();
+        
+        XSTestAssertTrue( t3.nextRunTime() < now );
+        
+        XSTestAssertTrue( t1.nextRunTime() > now + std::chrono::milliseconds(  90 ) );
+        XSTestAssertTrue( t2.nextRunTime() > now + std::chrono::milliseconds( 190 ) );
+        
+        XSTestAssertTrue( t1.nextRunTime() < now + std::chrono::milliseconds( 110 ) );
+        XSTestAssertTrue( t2.nextRunTime() < now + std::chrono::milliseconds( 210 ) );
+    }
+}
+
 XSTest( Timer, ShouldRun )
 {
     {

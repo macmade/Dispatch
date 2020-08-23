@@ -31,8 +31,6 @@
 
 namespace Dispatch
 {
-    using Clock     = std::chrono::high_resolution_clock;
-    using TimePoint = Clock::time_point;
     
     class Timer::IMPL
     {
@@ -111,19 +109,29 @@ namespace Dispatch
         return this->impl->_action;
     }
     
-    bool Timer::shouldRun() const
+    Timer::TimePoint Timer::nextRunTime() const
     {
         if( this->impl->_lastRun < this->impl->_created )
         {
-            return Clock::now() >= this->impl->_created + this->impl->_start.nanoseconds();
+            return this->impl->_created + this->impl->_start.nanoseconds();
         }
         
         if( this->impl->_kind == Kind::Transient )
         {
+            return this->impl->_lastRun;
+        }
+        
+        return this->impl->_lastRun + this->impl->_interval.nanoseconds();
+    }
+    
+    bool Timer::shouldRun() const
+    {
+        if( this->impl->_lastRun >= this->impl->_created && this->impl->_kind == Kind::Transient )
+        {
             return false;
         }
         
-        return Clock::now() >= this->impl->_lastRun + this->impl->_interval.nanoseconds();
+        return Clock::now() >= this->nextRunTime();
     }
     
     void Timer::run()
