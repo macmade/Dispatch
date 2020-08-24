@@ -96,6 +96,10 @@ namespace Dispatch
             case Thread::Priority::Normal: return *( queues->at( 1 ) );
             case Thread::Priority::High:   return *( queues->at( 2 ) );
         }
+
+        #ifdef _WIN32
+        return *( queues->at( 1 ) );
+        #endif
     }
     
     Queue & Queue::Low()

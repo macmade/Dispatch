@@ -321,6 +321,10 @@ namespace Dispatch
             case Kind::Hours:        return std::chrono::nanoseconds( value * 1000 * 1000 * 1000 * 60 * 60 );
             case Kind::Days:         return std::chrono::nanoseconds( value * 1000 * 1000 * 1000 * 60 * 60 * 24 );
         }
+
+        #ifdef _WIN32
+        return std::chrono::nanoseconds( 0 );
+        #endif
     }
     
     std::chrono::microseconds Interval::microseconds() const
