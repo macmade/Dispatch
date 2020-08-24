@@ -2,6 +2,7 @@ Dispatch
 ========
 
 [![Build Status](https://img.shields.io/travis/macmade/Dispatch.svg?branch=master&style=flat)](https://travis-ci.org/macmade/Dispatch)
+[![Build-AppVeyor](https://ci.appveyor.com/api/projects/status/github/macmade/Dispatch?svg=true)](https://ci.appveyor.com/project/macmade/Dispatch)
 [![Coverage Status](https://img.shields.io/coveralls/macmade/Dispatch.svg?branch=master&style=flat)](https://coveralls.io/r/macmade/Dispatch?branch=master)
 [![Issues](http://img.shields.io/github/issues/macmade/Dispatch.svg?style=flat)](https://github.com/macmade/Dispatch/issues)
 ![Status](https://img.shields.io/badge/status-active-brightgreen.svg?style=flat)
