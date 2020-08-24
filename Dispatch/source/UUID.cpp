@@ -35,6 +35,10 @@
 #include <uuid/uuid.h>
 #endif
 
+#ifdef _WIN32
+#include <Windows.h>
+#endif
+
 namespace Dispatch
 {
     class UUID::IMPL
@@ -131,6 +135,31 @@ namespace Dispatch
         );
     }
     
+    #endif
+
+    #ifdef _WIN32
+
+    UUID::IMPL::IMPL()
+    {
+        ::UUID          uuid;
+        unsigned char * s;
+
+        UuidCreate( &uuid );
+        UuidToStringA( &uuid, &s );
+
+        this->_uuid = reinterpret_cast< char * >( s );
+
+        RpcStringFreeA( &s );
+
+        std::transform
+        (
+            this->_uuid.begin(),
+            this->_uuid.end(),
+            this->_uuid.begin(),
+            ::tolower
+        );
+    }
+
     #endif
     
     UUID::IMPL::IMPL( const std::string & s ) noexcept( false )

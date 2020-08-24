@@ -70,9 +70,9 @@ int main()
     );
     
     {
-        std::mutex              mtx;
-        std::unique_lock        l( mtx );
-        std::condition_variable cv;
+        std::mutex                     mtx;
+        std::unique_lock< std::mutex > l( mtx );
+        std::condition_variable        cv;
         
         cv.wait( l, []() { return false; } );
     }
