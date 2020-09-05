@@ -68,6 +68,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		05B9BE6D2503A9850074714F /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		05F70D0D24E896D8006CFC65 /* Dispatch-Action.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "Dispatch-Action.cpp"; sourceTree = "<group>"; };
 		05F70D1524E89D2D006CFC65 /* Dispatch-UUID.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "Dispatch-UUID.cpp"; sourceTree = "<group>"; };
 		05F70D1F24E97F04006CFC65 /* Dispatch-Timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "Dispatch-Timer.cpp"; sourceTree = "<group>"; };
@@ -172,6 +173,7 @@
 			isa = PBXGroup;
 			children = (
 				05FBE8F024E7EB2C0028EF06 /* README.md */,
+				05B9BE6D2503A9850074714F /* LICENSE */,
 				05FBE9A824E870320028EF06 /* XSTest.xcodeproj */,
 				05FBE8F124E7EB4B0028EF06 /* xcconfig */,
 				05FBE8E124E7EADB0028EF06 /* Dispatch */,
